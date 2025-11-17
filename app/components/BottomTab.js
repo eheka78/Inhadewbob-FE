@@ -1,7 +1,7 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {View, Button, Text, Image} from 'react-native';
-import Home from '../screens/Home';
+import HomePage from '../screens/HomePage';
 import MealLog from '../screens/MealLog';
 import MyPage from '../screens/MyPage';
 
@@ -19,8 +19,8 @@ function BottomTab({navigation}) {
             }}
         >
             <Tab.Screen
-                name="Home"
-                component={Home}
+                name="HomePage"
+                component={HomePage}
                 options={{
                     headerTitle: () => (
                     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -31,7 +31,7 @@ function BottomTab({navigation}) {
                         />
                     </View>
                     ),
-                    headerTitleAlign: 'center', // 확실하게 중앙 정렬
+                    headerTitleAlign: 'center',
                 }}
             />
             <Tab.Screen
