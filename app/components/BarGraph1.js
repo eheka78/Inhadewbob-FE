@@ -16,7 +16,7 @@ export default function BarGraph1() {
   // https://www.npmjs.com/package/react-native-chart-kit?activeTab=readme
 
   return (
-    <View>
+    <View style={{height:100}}>
       <BarChart
         horizontal
         stackData={data}
