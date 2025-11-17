@@ -31,9 +31,6 @@ const BarGraph2 = () => {
 
   return (
     <View style={{ paddingVertical: 20, paddingHorizontal: 10 }}>
-      <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', marginBottom: 10 }}>
-        월별 소비
-      </Text>
         <BarChart
           data={data}
           width={350}
