@@ -5,7 +5,7 @@ import RouletteMachineMovingBall from './RouletteMachingMovingBall';
 const { width, height } = Dimensions.get("window");
 
 
-export default function RouletteMachine() {
+export default function RouletteMachine({ handlePresentModalPress }) {
 	const spinAnim = useRef(new Animated.Value(0)).current;
 	const [spinning, setSpinning] = useState(false);
 
@@ -51,7 +51,7 @@ export default function RouletteMachine() {
 				<View style={styles.panel}>
 					<Text style={{ fontWeight: 'bold', fontSize: 15, color: "#bbb" }}>예산과 카테고리 선택해듀</Text>
 				</View>
-				<Pressable style={styles.moveBtn}>
+				<Pressable style={styles.moveBtn} onPress={handlePresentModalPress}>
 					<Text style={styles.moveBtnText}>이동</Text>
 				</Pressable>
 			</View>
