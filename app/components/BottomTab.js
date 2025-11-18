@@ -37,7 +37,16 @@ function BottomTab({navigation}) {
                 name="MealLog"
                 component={MealLog}
                 options={{
-                    title: '식사 기록',
+                    headerTitle: () => (
+                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                        <Image
+                            source={require('../../assets/LOGO.png')}
+                            style={{ width: 100, height: 40 }}
+                            resizeMode="contain"
+                        />
+                    </View>
+                    ),
+                    headerTitleAlign: 'center',
                 }}
                 // 로그인 안 되어 있으면 로그인 페이지로
                 // listeners={({ navigation }) => ({
@@ -51,7 +60,16 @@ function BottomTab({navigation}) {
                 name="MyPage"
                 component={MyPage}
                 options={{
-                    title: '마이페이지',
+                    headerTitle: () => (
+                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                        <Image
+                            source={require('../../assets/LOGO.png')}
+                            style={{ width: 100, height: 40 }}
+                            resizeMode="contain"
+                        />
+                    </View>
+                    ),
+                    headerTitleAlign: 'center',
                 }}
                 // 로그인 안 되어 있으면 로그인 페이지로
                 // listeners={({ navigation }) => ({
