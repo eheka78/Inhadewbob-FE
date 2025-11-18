@@ -1,12 +1,16 @@
 import { Button, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
+import CalendarForm from '../components/Calendar';
 
 export default function MealLog({ navigation }) {
 	return (
-		<SafeAreaView>
-			<View>
-				<Text>MealLog</Text>
-			</View>
-		</SafeAreaView>
+		<SafeAreaProvider>
+			<SafeAreaView style={{ flex: 1, backgroundColor:"white" }}> 
+				<View>
+					<Text>MealLog</Text>
+					<CalendarForm></CalendarForm>
+				</View>
+			</SafeAreaView>
+		</SafeAreaProvider>
 	);
 }
