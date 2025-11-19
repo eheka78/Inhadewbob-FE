@@ -1,11 +1,13 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {View, Image} from 'react-native';
+import {View, Image, StyleSheet} from 'react-native';
 import HomePage from '../screens/HomePage';
 import MealLog from '../screens/MealLog';
 import MyPage from '../screens/MyPage';
 
 const Tab = createBottomTabNavigator();
+const LOGO = '../../assets/LOGO2.png';
+
 
 function BottomTab({navigation}) {
 
@@ -22,10 +24,10 @@ function BottomTab({navigation}) {
                 component={HomePage}
                 options={{
                     headerTitle: () => (
-                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <View style={styles.logoContainer}>
                         <Image
-                            source={require('../../assets/LOGO.png')}
-                            style={{ width: 100, height: 40 }}
+                            source={require(LOGO)}
+                            style={styles.logoImg}
                             resizeMode="contain"
                         />
                     </View>
@@ -38,10 +40,10 @@ function BottomTab({navigation}) {
                 component={MealLog}
                 options={{
                     headerTitle: () => (
-                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <View style={styles.logoContainer}>
                         <Image
-                            source={require('../../assets/LOGO.png')}
-                            style={{ width: 100, height: 40 }}
+                            source={require(LOGO)}
+                            style={styles.logoImg}
                             resizeMode="contain"
                         />
                     </View>
@@ -61,10 +63,10 @@ function BottomTab({navigation}) {
                 component={MyPage}
                 options={{
                     headerTitle: () => (
-                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <View style={styles.logoContainer}>
                         <Image
-                            source={require('../../assets/LOGO.png')}
-                            style={{ width: 100, height: 40 }}
+                            source={require(LOGO)}
+                            style={styles.logoImg}
                             resizeMode="contain"
                         />
                     </View>
@@ -83,5 +85,17 @@ function BottomTab({navigation}) {
     );
 }
 
+
+
+const styles = StyleSheet.create({
+    logoContainer: {
+        flex: 1, 
+        alignItems: 'center', 
+        justifyContent: 'center'
+    },
+    logoImg: {
+        height: 35
+    }
+});
 
 export default BottomTab;
