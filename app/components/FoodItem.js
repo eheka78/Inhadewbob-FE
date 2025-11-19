@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View } from "react-native";
 
 
-export default function FoodItem({item}) {
-    return(
-        <View style={styles.outerContainer}>
+export default function FoodItem({ item }) {
+    return (
+        <View key={item.id} style={styles.outerContainer}>
             <View style={styles.container}>
                 <Text>{item.store}</Text>
                 <Text>{item.menu}</Text>
@@ -14,14 +14,15 @@ export default function FoodItem({item}) {
     );
 }
 
+
 const styles = StyleSheet.create({
-    outerContainer:{
+    outerContainer: {
         width: "100%",
         paddingVertical: 7,
         paddingHorizontal: 15,
     },
     container: {
-        backgroundColor:"#F5F5F5",
+        backgroundColor: "#F5F5F5",
         borderRadius: 10,
         padding: 10,
         alignItems: "center",
