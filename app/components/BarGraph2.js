@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text } from 'react-native';
-import { BarChart, ProgressChart } from "react-native-chart-kit";
+import { View } from 'react-native';
+import { BarChart } from "react-native-chart-kit";
 
 
 

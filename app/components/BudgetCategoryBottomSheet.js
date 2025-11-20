@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, TextInput, View, Button } from "react-native";
 import { FoodCategory } from './../../assets/FoodCategory';
-import { useState } from "react";
+
 
 export default function BudgetCategoryBottomSheet({ setSelectedBudget, checked, setChecked }) {
     // 체크했을 때, 체크하는 함수
@@ -11,6 +11,7 @@ export default function BudgetCategoryBottomSheet({ setSelectedBudget, checked, 
                 : [...prev, id]
         );
     };
+
 
     return (
         <View style={{ padding: 16 }}>
@@ -59,6 +60,7 @@ export default function BudgetCategoryBottomSheet({ setSelectedBudget, checked, 
         </View>
     );
 }
+
 
 const styles = StyleSheet.create({
     title: {

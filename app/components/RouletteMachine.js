@@ -2,7 +2,8 @@ import React, { useRef, useState } from 'react';
 import { View, StyleSheet, Text, Dimensions, Pressable, Animated } from 'react-native';
 import RouletteMachineMovingBall from './RouletteMachingMovingBall';
 
-const { width, height } = Dimensions.get("window");
+
+const { width } = Dimensions.get("window");
 
 
 export default function RouletteMachine({ handlePresentModalPress }) {
@@ -32,12 +33,14 @@ export default function RouletteMachine({ handlePresentModalPress }) {
 
 	return (
 		<View style={styles.container}>
+
+			{/* 룰렛 머신 공 돌아가는 영역 */}
 			<View style={styles.displayPanel}>
 				<RouletteMachineMovingBall
-					boxSize={150}  // displayPanel 크기와 맞추기
+					boxSize={150}
 					numBalls={5}
 					duration={5000}
-					start={spinning} // spinning state와 연결
+					start={spinning}
 				/>
 			</View>
 			
@@ -46,24 +49,26 @@ export default function RouletteMachine({ handlePresentModalPress }) {
 				<Text>오늘의 한끼 추천 예산 <Text style={{ fontWeight: "bold" }}>₩ 55,000</Text></Text>
 			</View>
 
-			{/* 예산, 카테고리 */}
+			{/* 예산, 카테고리 선택 패널, 버튼 */}
 			<View style={styles.panelRow}>
 				<View style={styles.panel}>
 					<Text style={{ fontWeight: 'bold', fontSize: 15, color: "#bbb" }}>예산과 카테고리 선택해듀</Text>
 				</View>
-				<Pressable style={styles.moveBtn} onPress={handlePresentModalPress}>
+				
+				<Pressable style={styles.moveBtn} onPress={() => {console.log("click"); handlePresentModalPress();}}>
 					<Text style={styles.moveBtnText}>이동</Text>
 				</Pressable>
 			</View>
 
-			{/* 룰렛 돌리는 버튼 -> 클릭하면 360도 돌아감 */}
 			<View style={styles.bottomRow}>
+				{/* 룰렛 돌리는 버튼 -> 클릭하면 360도 돌아감 */}
 				<Pressable onPress={spinOnce}>
 					<Animated.View style={[styles.roundBtn, { transform: [{ rotate: spin }] }]}>
 						<View style={styles.pointerLine} />
 					</Animated.View>
 				</Pressable>
 
+				{/* 공 나오는 입구 */}
 				<View style={styles.rectBtn}>
 					<View style={styles.rectBtn2}></View>
 				</View>

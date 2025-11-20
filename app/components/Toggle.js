@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Animated } from "react-native";
+import React, { useState, useRef } from "react";
+import { View, TouchableOpacity, StyleSheet, Animated } from "react-native";
 
 
 export default function Toggle({ leftLabel = "왼쪽", rightLabel = "오른쪽", onToggle }) {

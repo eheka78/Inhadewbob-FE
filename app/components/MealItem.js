@@ -1,14 +1,17 @@
 import { StyleSheet, Text, View } from "react-native";
 
 
-export default function FoodItem({ item }) {
+export default function MealItem({ item }) {
+    console.log(item);
+
     return (
-        <View key={item.id} style={styles.outerContainer}>
+        <View style={styles.outerContainer}>
             <View style={styles.container}>
+                <Text>{item.t}</Text>
                 <Text>{item.store}</Text>
-                <Text>{item.menu}</Text>
-                <Text>₩ {item.price}</Text>
-                <Text>{item.category}</Text>
+                <Text>
+                    {item.category} | {item.menu}  ₩ {item.price}
+                </Text>
             </View>
         </View>
     );
@@ -27,5 +30,4 @@ const styles = StyleSheet.create({
         padding: 10,
         alignItems: "center",
     }
-
 });

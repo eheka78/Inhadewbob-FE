@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from "react";
-import { View, Animated, Dimensions, StyleSheet, Image } from "react-native";
+import { View, Animated, Dimensions } from "react-native";
 
 const BALL_SIZE = 50; // 공 크기
 const NUM_BALLS = 15;  // 공 개수
