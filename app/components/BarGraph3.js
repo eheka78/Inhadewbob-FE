@@ -1,5 +1,6 @@
 import { View } from "react-native";
 import { BarChart } from "react-native-gifted-charts";
+import { colors } from "../constants/colors";
         
 
 const chartConfig = {
@@ -14,9 +15,9 @@ const chartConfig = {
 
 
 const data = [
-    {value: 463, label: '10월 4주차'},
-    {value: 345, label: '11월 1주차', frontColor: '#177AD5'},
-    {value: 375, label: '11월 2주차'}
+    {value: 360, label: '10월 2주차', frontColor: colors.graphSubColor},
+    {value: 230, label: '10월 3주차', frontColor: colors.graphSubColor},
+    {value: 120, label: '10월 4주차', frontColor: colors.primary}
 ];
 
 
@@ -27,7 +28,7 @@ export default function BarGraph3() {
 
 
     return (
-        <View>
+        <View style={{ width:"100%", backgroundColor:"green" }}>
             <BarChart
                 chartConfig={chartConfig}
                 barWidth={40}
@@ -36,13 +37,12 @@ export default function BarGraph3() {
                 noOfSections={3}
                 dashWidth={0}
                 barBorderRadius={5}
-                frontColor="#cccccc"
                 data={data}
                 showBarTops={false}
                 fromZero={true}
                 yAxisThickness={0}
                 xAxisThickness={1}
-                xAxisColor="#cccccc"
+                xAxisColor="#AAAAAA"
                 yAxisLabel=""
                 yAxisSuffix="k"
                 showXAxisIndices={false}
