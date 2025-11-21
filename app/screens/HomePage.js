@@ -35,7 +35,7 @@ export default function HomePage({ navigation }) {
                     >
                         <BottomSheetView>
                             <View>
-                                <BudgetCategoryBottomSheet setSelectedBudget={setSelectedBudget} checked={checked} setChecked={setChecked} />
+                                <BudgetCategoryBottomSheet selectedBudget={selectedBudget} setSelectedBudget={setSelectedBudget} checked={checked} setChecked={setChecked} />
                             </View>
                         </BottomSheetView>
                     </BottomSheetModal>
