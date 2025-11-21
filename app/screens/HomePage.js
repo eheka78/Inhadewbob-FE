@@ -34,11 +34,9 @@ export default function HomePage({ navigation }) {
                         ref={bottomSheetModalRef}
                     >
                         <BottomSheetView>
-                            <SafeAreaView edges={["bottom"]}>
-                                <View>
-                                    <BudgetCategoryBottomSheet setSelectedBudget={setSelectedBudget} checked={checked} setChecked={setChecked} />
-                                </View>
-                            </SafeAreaView>
+                            <View>
+                                <BudgetCategoryBottomSheet setSelectedBudget={setSelectedBudget} checked={checked} setChecked={setChecked} />
+                            </View>
                         </BottomSheetView>
                     </BottomSheetModal>
 
@@ -56,9 +54,9 @@ export default function HomePage({ navigation }) {
                     <ScrollView
                         style={{ flex: 1 }}
                     >
-                        <View style={{ height: 70 }} />
+                        <View style={{ height: 40 }} />
                         {/* 홈, 룰렛 페이지 import */}
-                        {homeType === "홈" && <Home />}
+                        {homeType === "홈" && <Home setHomeType={setHomeType} />}
                         {homeType === "룰렛" && <Roulette handlePresentModalPress={handlePresentModalPress} />}
 
                         {/* <Button
