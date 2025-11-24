@@ -1,11 +1,14 @@
-import React, { useState, useRef } from 'react';
+import React, {useState, useRef, useCallback, useMemo} from 'react';
 import {Text, View, StyleSheet, Button, ScrollView, Pressable} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
+import { BottomSheetModal, BottomSheetModalProvider, BottomSheetView } from '@gorhom/bottom-sheet';
+import BudgetCategoryBottomSheet from '../components/BudgetCategoryBottomSheet.js';
+
 
 import RouletteMachine from '../components/RouletteMachine';
 import FoodList from '../components/FoodList';
 
-export default function Roulette({ handlePresentModalPress }) {
+export default function Roulette() {
     const [recFoodList, setRecFoodList] = useState([]);
 
     const scrollRef = useRef();
@@ -19,26 +22,56 @@ export default function Roulette({ handlePresentModalPress }) {
         scrollRef.current.scrollToEnd({ animated: true });
     }
 
+    // bottomSheet 관련
+    const bottomSheetModalRef = useRef(null);
+    const snapPoints = useMemo(() => ['65%'], []);
+
+    const handlePresentModalPress = useCallback(() => {
+        bottomSheetModalRef.current?.present();
+    }, []);
+
+    // BudgetCategoryBottomSheet 에서 예산, 카테고리 설정 변수
+    const [selectedBudget, setSelectedBudget] = useState('');
+    const [checked, setChecked] = useState([]);
+
+
     return (
-        <SafeAreaView style={styles.container}>
-            <ScrollView ref={scrollRef}>
-                {/* 룰렛 머신 */}
-                <View style={styles.innerContainer}>
-                    <RouletteMachine handlePresentModalPress={handlePresentModalPress} />
-                </View>
+        <BottomSheetModalProvider>
+            <SafeAreaProvider>
+                <SafeAreaView style={styles.container}>
+                    {/* RouletteMachine.js에서 '이동' 버튼 눌렀을 때 - 카테고리, 예산을 선택하는 BottomSheet */}
+                    <BottomSheetModal
+                        ref={bottomSheetModalRef}
+                    >
+                        <BottomSheetView>
+                            <View>
+                                <BudgetCategoryBottomSheet selectedBudget={selectedBudget} setSelectedBudget={setSelectedBudget} checked={checked} setChecked={setChecked} />
+                            </View>
+                        </BottomSheetView>
+                    </BottomSheetModal>
+
+                    <ScrollView ref={scrollRef} >
+                        <View style={{ margin: "auto", width: "90%", }}>
+                            {/* 룰렛 머신 */}
+                            <View style={styles.innerContainer}>
+                                <RouletteMachine handlePresentModalPress={handlePresentModalPress} />
+                            </View>
 
 
-                {/* 룰렛에서 뽑은 메뉴 리스트 출력 */}
-                <View
-                    onLayout={(event) => {
-                        setFoodListY(event.nativeEvent.layout.y);
-                    }}
-                >
-                    {/* { recFoodList && recFoodList.length() > 0 && <FoodList /> */}
-                    <FoodList />
-                </View>
-            </ScrollView>
-        </SafeAreaView>
+                            {/* 룰렛에서 뽑은 메뉴 리스트 출력 */}
+                            <View
+                                onLayout={(event) => {
+                                    setFoodListY(event.nativeEvent.layout.y);
+                                }}
+                            >
+                                {/* { recFoodList && recFoodList.length() > 0 && <FoodList /> */}
+                                <FoodList />
+                            </View>
+                        </View>
+                    </ScrollView>
+                </SafeAreaView>
+            </SafeAreaProvider>
+        </BottomSheetModalProvider>
     );
 }
 
@@ -47,7 +80,7 @@ export default function Roulette({ handlePresentModalPress }) {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#fff'
+        backgroundColor: "white",
 	},
 	innerContainer: {
 		flex: 1,

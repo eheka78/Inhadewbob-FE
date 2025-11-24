@@ -55,16 +55,8 @@ export default function MealLog({ navigation }) {
                     </BottomSheetModal>
 
                     <ScrollView contentContainerStyle={{ padding: 16 }}>
-                        <Text>MealLog</Text>
-
-                        {/* 월간 캘린더 v1 */}
+                        {/* 월간 캘린더 */}
                         <Calendar selectedDate={selectedDate} setSelectedDate={setSelectedDate}  />
-
-                        {/* 주간 캘린더 v2 */}
-                        {/*<WeeklyCalendar1 />*/}
-
-                        {/* 주간 캘린더 v3 */}
-                        {/*<WeeklyCalendar2 setSelectedDate={setSelectedDate} />*/}
                     </ScrollView>
                 </SafeAreaView>
             </SafeAreaProvider>
