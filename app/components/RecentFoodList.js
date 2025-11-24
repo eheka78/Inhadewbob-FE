@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 
 
 const mealList = [
-    { id: 1, store: "KFC", menu: "징거세트", price: "7900", category: "패스트푸드" },
-    { id: 2, store: "KFC", menu: "징거세트", price: "7900", category: "패스트푸드" },
-    { id: 3, store: "KFC", menu: "징거세트", price: "7900", category: "패스트푸드" },
-    { id: 4, store: "KFC", menu: "징거세트", price: "7900", category: "패스트푸드" },
-    { id: 5, store: "KFC", menu: "징거세트", price: "7900", category: "패스트푸드" },
+    { id: 1, store: "KFC", menu: "징거세트1", price: "7900", category: "패스트푸드" },
+    { id: 2, store: "KFC", menu: "징거세트2", price: "7900", category: "패스트푸드" },
+    { id: 3, store: "KFC", menu: "징거세트3", price: "7900", category: "패스트푸드" },
+    { id: 4, store: "KFC", menu: "징거세트4", price: "7900", category: "패스트푸드" },
+    { id: 5, store: "KFC", menu: "징거세트5", price: "7900", category: "패스트푸드" },
 ];
 
 
