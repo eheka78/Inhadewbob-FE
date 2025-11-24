@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { colors } from "../constants/colors";
 
 LocaleConfig.locales.fr = {
     monthNames: ['01월', '02월', '03월', '04월', '05월', '06월', '07월', '08월', '09월', '10월', '11월', '12월'],
@@ -32,6 +33,7 @@ export default function calendarForm({ selectedDate, setSelectedDate }) {
         <SafeAreaView style={styles.modalbg}>
             <View style={styles.container}>
                 <Calendar
+                    firstDay={1}    // 월요일부터
                     style={styles.calendarbox}
                     current={INITIAL_DATE}
                     monthFormat={'yyyy.MM'}
@@ -44,7 +46,7 @@ export default function calendarForm({ selectedDate, setSelectedDate }) {
                         [selectedDate]: {
                             selected: true,
                             disableTouchEvent: true,
-                            selectedColor: 'orange',
+                            selectedColor: colors.primary,
                             selectedTextColor: 'white'
                         }
                     }}
