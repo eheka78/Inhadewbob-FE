@@ -26,7 +26,6 @@ const styles = StyleSheet.create({
     outerContainer: {
         width: "100%",
         paddingVertical: 7,
-        paddingHorizontal: 15,
     },
     Img:{
         height: "100%",
