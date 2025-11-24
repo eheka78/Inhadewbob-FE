@@ -160,7 +160,7 @@ export default function Home({ navigation, setHomeType }) {
                         <View style={{ padding: 20 }}></View>
 
                         <View>
-                            <Text>최근 식사</Text>
+                            <Text  style={{ fontWeight: "bold" }}>최근 식사</Text>
 
                             <RecentFoodList />
                         </View>
