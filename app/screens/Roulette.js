@@ -22,21 +22,23 @@ export default function Roulette({ handlePresentModalPress }) {
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container}>
-                <ScrollView ref={scrollRef}>
-                    {/* 룰렛 머신 */}
-                    <View style={styles.innerContainer}>
-                        <RouletteMachine handlePresentModalPress={handlePresentModalPress} />
-                    </View>
+                <ScrollView ref={scrollRef} >
+                    <View style={{ margin: "auto", width: "90%", }}>
+                        {/* 룰렛 머신 */}
+                        <View style={styles.innerContainer}>
+                            <RouletteMachine handlePresentModalPress={handlePresentModalPress} />
+                        </View>
 
 
-                    {/* 룰렛에서 뽑은 메뉴 리스트 출력 */}
-                    <View
-                        onLayout={(event) => {
-                            setFoodListY(event.nativeEvent.layout.y);
-                        }}
-                    >
-                        {/* { recFoodList && recFoodList.length() > 0 && <FoodList /> */}
-                        <FoodList />
+                        {/* 룰렛에서 뽑은 메뉴 리스트 출력 */}
+                        <View
+                            onLayout={(event) => {
+                                setFoodListY(event.nativeEvent.layout.y);
+                            }}
+                        >
+                            {/* { recFoodList && recFoodList.length() > 0 && <FoodList /> */}
+                            <FoodList />
+                        </View>
                     </View>
                 </ScrollView>
             </SafeAreaView>
@@ -49,7 +51,7 @@ export default function Roulette({ handlePresentModalPress }) {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#fff'
+        backgroundColor: "white",
 	},
 	innerContainer: {
 		flex: 1,

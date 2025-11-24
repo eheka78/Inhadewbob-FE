@@ -38,7 +38,7 @@ export default function RouletteMachine({ handlePresentModalPress }) {
 			{/* 룰렛 머신 공 돌아가는 영역 */}
 			<View style={styles.displayPanel}>
 				<RouletteMachineMovingBall
-					boxSize={150}
+					boxSize={170}
 					numBalls={5}
 					duration={5000}
 					start={spinning}
@@ -81,7 +81,7 @@ export default function RouletteMachine({ handlePresentModalPress }) {
 
 const styles = StyleSheet.create({
 	container: {
-		width: width * 0.8,
+		width: width * 0.9,
 		alignSelf: "center",
 		flex: 1,
 		padding: 24,
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between'
 	},
 	displayPanel: {
-		height: 150,
+		height: 170,
 		backgroundColor: RouletteColors.main,
 		borderRadius: 24,
 		marginBottom: 16,
@@ -129,6 +129,8 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		justifyContent: "space-between",
 		marginTop: 24,
+        marginLeft: 25,
+        marginRight: 15,
 	},
 	roundBtn: {
 		width: 120,

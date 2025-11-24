@@ -9,8 +9,8 @@ const DURATION = 5000; // 5초
 
 const RouletteMachingMovingBall = ({ start = false }) => {
 	const { width } = Dimensions.get("window");
-	const boxWidth = width * 0.8 - 48;
-	const boxHeight = 150;
+	const boxWidth = width * 0.9 - 48;
+	const boxHeight = 170;
 
 
 	// 공 상태
