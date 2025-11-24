@@ -4,6 +4,7 @@ import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { colors } from '../constants/colors';
 import { formatPrice3 } from '../utils/FormatPrice3';
 import RecentFoodList from '../components/RecentFoodList';
+import React from "react";
 
 
 const data = [
@@ -37,15 +38,7 @@ export default function Home({ navigation, setHomeType }) {
                             />
 
 
-                            <View
-                                style={{
-                                    width: "100%",
-                                    borderColor: "black",
-                                    borderWidth: 1,
-                                    borderRadius: 20,
-                                    paddingVertical: 20, paddingHorizontal: 30,
-                                }}
-                            >
+                            <View style={[styles.box]}>
                                 <Text style={{ fontWeight: "bold" }}>이번 주 지출 현황</Text>
 
                                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -91,42 +84,48 @@ export default function Home({ navigation, setHomeType }) {
                         >
                             <Pressable
                                 onPress={() => navigation.navigate('Roulette')}
-                                style={{
-                                    width: "47%",
-                                    backgroundColor: colors.primary,
-                                    borderRadius: 20,
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    paddingVertical: 10
-                                }}
+                                style={[
+                                    styles.box, {
+                                        width: "47%",
+                                        backgroundColor: colors.primary,
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        paddingVertical: 10,
+                                        flexDirection: "row",
+                                    }
+                                ]}
                             >
-                                <Text>룰렛</Text>
+                                <Image
+                                    source={require('../../assets/roulette-tab.png')}
+                                    style={{ tintColor: "white", height: 25 }}
+                                    resizeMode="contain"
+                                />
+                                <Text style={{color: "white", fontWeight: "bold"}}>룰렛</Text>
                             </Pressable>
+
                             <Pressable
                                 onPress={() => navigation.navigate('MealLog')}
-                                style={{
-                                    width: "47%",
-                                    backgroundColor: "#FFE66D",
-                                    borderRadius: 20,
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    paddingVertical: 10
-                                }}>
-                                <Text>식단 기록</Text>
+                                style={[
+                                    styles.box, {
+                                        width: "47%",
+                                        backgroundColor: "#FFE66D",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        paddingVertical: 10,
+                                        flexDirection: "row",
+                                    }
+                                ]}
+                            >
+                                <Image
+                                    source={require('../../assets/my-tab.png')}
+                                    style={{ tintColor: "black", height: 25 }}
+                                    resizeMode="contain"
+                                />
+                                <Text style={{ fontWeight:"bold" }}>식단 기록</Text>
                             </Pressable>
                         </View>
 
-                        <View
-                            style={{
-                                width: "100%",
-                                borderColor: "black",
-                                borderWidth: 1,
-                                borderRadius: 20,
-                                paddingVertical: 20,
-                                paddingHorizontal: 30,
-                                margin: "auto"
-                            }}
-                        >
+                        <View style={[styles.box]}>
                             <Text style={{ fontWeight: "bold" }}>주차별 비교</Text>
 
                             {/* <BarGraph3 /> */}
@@ -252,6 +251,17 @@ const styles = StyleSheet.create({
         marginVertical: 5,
         fontSize: 12,
         textAlign: 'center',
+    },
+    box: {  // 그림자 박스
+        width: "100%",
+        backgroundColor: "white",
+        borderRadius: 20,
+        paddingVertical: 20, paddingHorizontal: 30,
+        shadowColor: "#000", shadowOpacity: 0.12,
+        shadowOffset: { width: 4, height: 4 },
+        shadowRadius: 7,
+        elevation: 7,
+        transform: [{ rotate: "0.02deg" }],
     },
 });
 
