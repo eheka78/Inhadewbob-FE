@@ -1,14 +1,17 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { View, Animated, Dimensions } from "react-native";
+import Ball from "./Ball";
+import Ball2 from "./Ball2";
 
-const BALL_SIZE = 50; // 공 크기
+const BALL_SIZE = 60; // 공 크기
 const NUM_BALLS = 15;  // 공 개수
 const DURATION = 5000; // 5초
 
 const RouletteMachingMovingBall = ({ start = false }) => {
 	const { width } = Dimensions.get("window");
-	const boxWidth = width * 0.8 - 48;
-	const boxHeight = 150;
+	const boxWidth = width * 0.9 - 48;
+	const boxHeight = 170;
+
 
 	// 공 상태
 	const balls = useRef(
@@ -53,42 +56,51 @@ const RouletteMachingMovingBall = ({ start = false }) => {
 
 		animate();
 
-	// 5초 후 바람 종료
-	const timer = setTimeout(() => {
-		cancelAnimationFrame(animationFrameId); // 루프 중지
+		// 5초 후 바람 종료
+		const timer = setTimeout(() => {
+			cancelAnimationFrame(animationFrameId); // 루프 중지
 
-		
-	}, DURATION);
 
-	// 공 아래로 떨어뜨리기
-	balls.forEach((ball) => {
-		Animated.timing(ball.y, {
-			toValue: boxHeight - BALL_SIZE,
-			duration: 500, // 떨어지는 속도
-			useNativeDriver: true,
-		}).start();
-	});
+		}, DURATION);
 
-	return () => {
-		clearTimeout(timer);
-		cancelAnimationFrame(animationFrameId);
-	};
+		// 공 아래로 떨어뜨리기
+		balls.forEach((ball) => {
+			Animated.timing(ball.y, {
+				toValue: boxHeight - BALL_SIZE,
+				duration: 500, // 떨어지는 속도
+				useNativeDriver: true,
+			}).start();
+		});
+
+		return () => {
+			clearTimeout(timer);
+			cancelAnimationFrame(animationFrameId);
+		};
 	}, [start]);
 
 
 	return (
 		<View style={{ width: boxWidth, height: boxHeight, position: "relative" }}>
 			{balls.map((ball, i) => (
-				<Animated.Image
+				// <Animated.Image
+				// 	key={i}
+				// 	source={require("../../assets/RouletteMachine_Ball.png")}
+				// 	style={{
+				// 		width: BALL_SIZE,
+				// 		height: BALL_SIZE,
+				// 		position: "absolute",
+				// 		transform: [{ translateX: ball.x }, { translateY: ball.y }],
+				// 	}}
+				// />
+				<Animated.View
 					key={i}
-					source={require("../../assets/RouletteMachine_Ball.png")}
 					style={{
-						width: BALL_SIZE,
-						height: BALL_SIZE,
 						position: "absolute",
 						transform: [{ translateX: ball.x }, { translateY: ball.y }],
 					}}
-				/>
+				>
+					<Ball2 size={BALL_SIZE} />
+				</Animated.View>
 			))}
 		</View>
 	);

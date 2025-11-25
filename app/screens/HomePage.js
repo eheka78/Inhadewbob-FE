@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { View, ScrollView } from 'react-native';
+import {View, ScrollView, Button} from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import Home from './Home.js';
 import Roulette from './Roulette.js';
@@ -34,11 +34,9 @@ export default function HomePage({ navigation }) {
                         ref={bottomSheetModalRef}
                     >
                         <BottomSheetView>
-                            <SafeAreaView edges={["bottom"]}>
-                                <View>
-                                    <BudgetCategoryBottomSheet setSelectedBudget={setSelectedBudget} checked={checked} setChecked={setChecked} />
-                                </View>
-                            </SafeAreaView>
+                            <View>
+                                <BudgetCategoryBottomSheet selectedBudget={selectedBudget} setSelectedBudget={setSelectedBudget} checked={checked} setChecked={setChecked} />
+                            </View>
                         </BottomSheetView>
                     </BottomSheetModal>
 
@@ -56,15 +54,23 @@ export default function HomePage({ navigation }) {
                     <ScrollView
                         style={{ flex: 1 }}
                     >
-                        <View style={{ height: 70 }} />
+                        <View style={{ height: 40 }} />
                         {/* 홈, 룰렛 페이지 import */}
-                        {homeType === "홈" && <Home />}
+                        {homeType === "홈" && <Home setHomeType={setHomeType} />}
                         {homeType === "룰렛" && <Roulette handlePresentModalPress={handlePresentModalPress} />}
 
-                        {/* <Button
+                        <Button
                             title="로그인 페이지로 이동"
                             onPress={() => navigation.getParent().navigate("Login")}
-                        /> */}
+                        />
+                        <Button
+                            title="frontPage 이동"
+                            onPress={() => navigation.getParent().navigate("FrontPage")}
+                        />
+                        <Button
+                            title="초기 설정"
+                            onPress={() => navigation.getParent().navigate("InitialSetting")}
+                        />
                     </ScrollView>
 
                 </SafeAreaView>

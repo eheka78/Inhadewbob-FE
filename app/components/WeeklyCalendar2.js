@@ -2,8 +2,9 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import CalendarStrip from 'react-native-calendar-strip';
+import {colors} from "../constants/colors";
 
-export default function WeeklyCalendar2({ setSelectedDate }) {
+export default function WeeklyCalendar2({ selectedDate, setSelectedDate }) {
     // react-native-calendar-strip
     // npm install react-native-calendar-strip
 
@@ -40,15 +41,16 @@ export default function WeeklyCalendar2({ setSelectedDate }) {
     return (
         <View style={styles.container}>
             <CalendarStrip
+                selectedDate={selectedDate} // selectedDate의 주간 달력 나오게
                 calendarAnimation={{ type: 'sequence', duration: 30 }}
                 daySelectionAnimation={{ type: 'border', duration: 200, borderWidth: 1, borderHighlightColor: 'white' }}
                 style={{ height: 100, paddingTop: 10, paddingBottom: 10 }}
-                calendarHeaderStyle={{ color: 'white' }}
-                calendarColor={'#7743CE'}
-                dateNumberStyle={{ color: 'white' }}
-                dateNameStyle={{ color: 'white' }}
-                highlightDateNumberStyle={{ color: 'yellow' }}
-                highlightDateNameStyle={{ color: 'yellow' }}
+                calendarHeaderStyle={{ color: 'black' }}
+                calendarColor={'white'}
+                dateNumberStyle={{ color: 'black' }}
+                dateNameStyle={{ color: 'black' }}
+                highlightDateNumberStyle={{ color: colors.primary }}
+                highlightDateNameStyle={{ color: colors.primary }}
                 disabledDateNameStyle={{ color: 'grey' }}
                 disabledDateNumberStyle={{ color: 'grey' }}
                 iconLeft={require('../../assets/left-arrow-black.png')}

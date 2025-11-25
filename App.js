@@ -8,6 +8,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Login from "./app/screens/Login";
 import BottomTab from "./app/components/BottomTab";
 import InitialSetting from "./app/screens/InitialSetting";
+import FrontPage from "./app/screens/FrontPage";
 
 
 const Stack = createNativeStackNavigator();
@@ -24,6 +25,11 @@ export default function App() {
                             name="Main"
                             component={BottomTab}
                             options={{headerShown: false}}
+                        />
+                        <Stack.Screen
+                            options={{ headerShown: false }}
+                            name="FrontPage"
+                            component={FrontPage}
                         />
                         <Stack.Screen
                             options={{ headerShown: false }}

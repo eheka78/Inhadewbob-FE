@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Image } from "react-native";
 
 
 export default function MealItem({ item }) {
@@ -7,11 +7,18 @@ export default function MealItem({ item }) {
     return (
         <View style={styles.outerContainer}>
             <View style={styles.container}>
-                <Text>{item.t}</Text>
-                <Text>{item.store}</Text>
-                <Text>
-                    {item.category} | {item.menu}  ₩ {item.price}
-                </Text>
+                <Image
+                    source={require('../../assets/TempImg.png')}
+                    style={styles.Img}
+                    resizeMode="contain"
+                />
+                <View>
+                    <Text>{item.t}</Text>
+                    <Text>{item.store}</Text>
+                    <Text>
+                        {item.category} | {item.menu}  ₩ {item.price}
+                    </Text>
+                </View>
             </View>
         </View>
     );
@@ -24,10 +31,14 @@ const styles = StyleSheet.create({
         paddingVertical: 7,
         paddingHorizontal: 15,
     },
+    Img:{
+        height: "100%",
+    },
     container: {
+        flexDirection: "row",
+        alignItems: "center",
         backgroundColor: "#F5F5F5",
         borderRadius: 10,
         padding: 10,
-        alignItems: "center",
     }
 });
