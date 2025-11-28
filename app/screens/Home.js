@@ -117,7 +117,7 @@ export default function Home({ navigation, setHomeType }) {
                                 ]}
                             >
                                 <Image
-                                    source={require('../../assets/my-tab.png')}
+                                    source={require('../../assets/calendar-tab.png')}
                                     style={{ tintColor: "black", height: 25 }}
                                     resizeMode="contain"
                                 />

@@ -92,7 +92,7 @@ function BottomTab({navigation}) {
                     tabBarLabel: '식단 기록',
                     tabBarIcon: ({ focused }) => (
                         <Image
-                            source={require('../../assets/roulette-tab.png')}
+                            source={require('../../assets/calendar-tab.png')}
                             style={{
                                 width: 25,
                                 height: 25,
