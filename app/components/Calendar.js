@@ -52,12 +52,12 @@ export default function calendarForm({ selectedDate, setSelectedDate }) {
                     }}
                     theme={{
                         'stylesheet.calendar.header': {
-                            dayTextAtIndex0: {
-                                color: '#FF0000',
+                            dayTextAtIndex5: {  // 토요일 요일 텍스트 색상
+                                color: '#709ef8ff',
                             },
-                            dayTextAtIndex6: {
-                                color: '#007BA4',
-                            },
+                            dayTextAtIndex6: {  // 일요일 요일 텍스트 색상
+                                color: '#0353f5ff',
+                            }
                         },
                         backgroundColor: '#ffffff',
                         calendarBackground: '#ffffff',
