@@ -33,17 +33,18 @@ export default function calendarForm({ selectedDate, setSelectedDate }) {
         <SafeAreaView style={styles.modalbg}>
             <View style={styles.container}>
                 <Calendar
+                    horizontal
                     firstDay={1}    // 월요일부터
                     style={styles.calendarbox}
-                    current={INITIAL_DATE}
-                    monthFormat={'yyyy.MM'}
+                    current={INITIAL_DATE}  // 오늘 날짜
+                    monthFormat={'yyyy년\nM월'}  // 2025년\n8월 // 2025년\n10월
                     hideExtraDays={false}
                     onDayPress={onDayPress}
                     markedDates={{
                         // '2025-11-01': { dotColor: 'orange', selected: true, marked: true, selectedColor: 'blue' },
                         // '2025-11-02': { dotColor: 'orange', marked: true },
                         // '2025-11-03': { dotColor: 'orange', selected: true, marked: true },
-                        [selectedDate]: {
+                        [selectedDate]: {   // 선택된 날짜 action setting-> 배경 색상, 글 색상 변경
                             selected: true,
                             disableTouchEvent: true,
                             selectedColor: colors.primary,
@@ -57,6 +58,15 @@ export default function calendarForm({ selectedDate, setSelectedDate }) {
                             },
                             dayTextAtIndex6: {  // 일요일 요일 텍스트 색상
                                 color: '#0353f5ff',
+                            },
+                            // header: {
+                            //     justifyContent: 'center',
+                            //     alignItems: 'center',
+                            // },
+                            monthText: {
+                                fontSize: 20,
+                                fontWeight: "bold",
+                                textAlign: 'center',
                             }
                         },
                         backgroundColor: '#ffffff',
@@ -67,7 +77,8 @@ export default function calendarForm({ selectedDate, setSelectedDate }) {
                         todayBackgroundColor: '#E6EEF5',
                         dayTextColor: '#000',
                         textDisabledColor: '#d9e1e8',
-                        arrowColor: '#5B5B5B',
+                        arrowColor: '#000',
+                        arrowWidth: 40
                     }}
                 />
             </View>
