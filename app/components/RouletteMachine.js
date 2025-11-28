@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { View, StyleSheet, Text, Dimensions, Pressable, Animated } from 'react-native';
+import { View, StyleSheet, Text, Dimensions, Pressable, Animated, Image } from 'react-native';
 import RouletteMachineMovingBall from './RouletteMachingMovingBall';
 import { RouletteColors } from '../constants/colors';
 import { formatPrice3 } from './../utils/FormatPrice3';
@@ -52,12 +52,19 @@ export default function RouletteMachine({
 			
 			{/* 오늘 예산 출력되는 패널 */}
 			<View style={styles.panel}>
-				<Text>오늘의 한끼 추천 예산 <Text style={{ fontWeight: "bold" }}>₩ 55,000</Text></Text>
+				<Image
+					source={require('../../assets/money.png')}
+					style={{ tintColor: "white", height: 25, paddingVertical:5, }}
+					resizeMode="contain"
+				/>
+				<Text style={{color: "white", fontWeight: "bold", fontSize: 18}}>
+					오늘의 추천 예산 <Text style={{ fontWeight: "bold" }}>₩ 55,000</Text>
+				</Text>
 			</View>
 
 			{/* 예산, 카테고리 선택 패널, 버튼 */}
 			<View style={styles.panelRow}>
-				<View style={styles.panel}>
+				<View style={styles.panel2}>
 					{
 						((!selectedBudget || selectedBudget == 0) && (!checked || checked.length === 0)) &&
 							<Text style={{ fontWeight: 'bold', fontSize: 15, color: "#bbb" }}>예산과 카테고리 선택해듀</Text>
@@ -117,6 +124,16 @@ const styles = StyleSheet.create({
 		marginBottom: 16,
 	},
 	panel: {
+		height: 50,
+		backgroundColor: RouletteColors.main,
+		borderRadius: 12,
+		marginBottom: 8,
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "center",
+		flex: 1,
+	},
+	panel2: {
 		height: 50,
 		backgroundColor: RouletteColors.sub,
 		borderRadius: 12,
