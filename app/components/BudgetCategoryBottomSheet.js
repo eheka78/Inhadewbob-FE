@@ -1,26 +1,26 @@
 import { Pressable, StyleSheet, Text, TextInput, View, KeyboardAvoidingView, Platform, InputAccessoryView, Keyboard, ScrollView } from "react-native";
-import { FoodCategory } from './../../assets/FoodCategory';
+import { FoodCategory } from '../constants/FoodCategory';
 import { colors } from "../constants/colors";
 import { useEffect, useState } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 
-export default function BudgetCategoryBottomSheet({ 
+export default function BudgetCategoryBottomSheet({
     selectedBudget, setSelectedBudget, checked, setChecked
 }) {
     const [saved, setSaved] = useState(true);
-    
+
     // bottomSheet 내부 예산, 카테고리(체크) 저장 변수
     const [budg, setbudg] = useState(selectedBudget);
     const [selec, setSelec] = useState(checked);
 
 
     // 체크했을 때, 체크하는 함수
-    const toggle = (id) => {
+    const toggle = (label) => {
         setSelec((prev) =>
-            prev.includes(id)
-                ? prev.filter((item) => item !== id)
-                : [...prev, id]
+            prev.includes(label)
+                ? prev.filter((item) => item !== label)
+                : [...prev, label]
         );
     };
 
@@ -58,23 +58,23 @@ export default function BudgetCategoryBottomSheet({
                     />
                 </View>
 
-                <View style={{padding: 10}}></View>
+                <View style={{ padding: 10 }}></View>
 
                 {/* 음식 카테고리 */}
                 <View>
                     <Text style={styles.subTitle}>카테고리</Text>
                     <View style={styles.tagContainer}>
                         {FoodCategory.map((item) => {
-                            const isChecked = selec.includes(item.id);
+                            const isChecked = selec.includes(item.label);
                             return (
                                 <Pressable
-                                    key={item.id}
+                                    key={item.label}
                                     style={[
                                         styles.tag,
                                         isChecked && styles.tagSelected
                                     ]}
                                     onPress={() => {
-                                        toggle(item.id);
+                                        toggle(item.label);
                                         setSaved(false);
                                     }}
                                 >
@@ -102,12 +102,12 @@ export default function BudgetCategoryBottomSheet({
                         marginTop: 30
                     }}
                 >
-                    <Text 
-                        style={{ 
+                    <Text
+                        style={{
                             color: saved ? "white" : colors.primary,
-                            fontWeight: "30", 
-                            fontSize: 20, 
-                            textAlign: "center" 
+                            fontWeight: "30",
+                            fontSize: 20,
+                            textAlign: "center"
                         }}>
                         설정 완료
                     </Text>
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: "600",
         marginBottom: 16,
-        textAlign:"center"
+        textAlign: "center"
     },
     subTitle: {
         fontSize: 16,
