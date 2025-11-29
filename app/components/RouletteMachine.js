@@ -66,15 +66,15 @@ export default function RouletteMachine({
 			<View style={styles.panelRow}>
 				<View style={styles.panel2}>
 					{/* 선택한 사항(음식 카테고리, 선택 예산) 나오는 패널 */}
-					<View>
-						{
-							((!selectedBudget || selectedBudget == 0) && (!checked || checked.length === 0)) &&
-								<Text style={{ fontWeight: 'bold', fontSize: 15, color: "#bbb" }}>예산과 카테고리 선택해듀</Text>
-						}
-						{ (selectedBudget != 0 && selectedBudget) && <Text>{formatPrice3(selectedBudget)}</Text> }
-						{ (selectedBudget != 0 && checked.length != 0) && <Text> / </Text> }
-						{ (checked.length != 0 && checked) && <Text>{checked}</Text> }
-					</View>
+					<Text style={{ flexDirection: "row", fontWeight: 'bold', fontSize: 15, flexWrap: "nowrap", color:"#bbb" }}>
+						{((!selectedBudget || selectedBudget == 0) && (!checked || checked.length === 0))
+							&& "예산과 카테고리 선택해듀"}
+					</Text>
+					<Text style={{ flexDirection: "row", fontWeight: 'bold', fontSize: 15, flexWrap: "nowrap" }}>
+						{ (selectedBudget != 0 && selectedBudget) && `${formatPrice3(selectedBudget)}` }
+						{ (selectedBudget != 0 && checked.length != 0) && " / " }
+						{ (checked.length != 0 && checked) && `${checked.join(", ")}` }
+					</Text>
 
 					{/* 이동 버튼 */}
 					<Pressable 

@@ -1,7 +1,8 @@
-import { Pressable, StyleSheet, Text, TextInput, View, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
+import { Pressable, StyleSheet, Text, TextInput, View, KeyboardAvoidingView, Platform, InputAccessoryView, Keyboard, ScrollView } from "react-native";
 import { FoodCategory } from './../../assets/FoodCategory';
 import { colors } from "../constants/colors";
 import { useEffect, useState } from "react";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 
 export default function BudgetCategoryBottomSheet({ 
@@ -13,7 +14,7 @@ export default function BudgetCategoryBottomSheet({
     const [budg, setbudg] = useState(selectedBudget);
     const [selec, setSelec] = useState(checked);
 
-    
+
     // 체크했을 때, 체크하는 함수
     const toggle = (id) => {
         setSelec((prev) =>
@@ -33,12 +34,12 @@ export default function BudgetCategoryBottomSheet({
 
 
     return (
-        <KeyboardAvoidingView
-            style={{ flex: 1 }}
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            keyboardVerticalOffset={Platform.OS === "ios" ? 50 : 20}    // 키보드 나올 때 고려해서 offset 만듦.
+        <KeyboardAwareScrollView
+            enableOnAndroid={false}
+            keyboardOpeningTime={0}
+            contentContainerStyle={{ flexGrow: 1 }}
         >
-            <View style={{ padding: 30 }}>
+            <View style={{ flex: 1, padding: 30 }}> 
                 <Text style={styles.title}>오늘의 예산 · 카테고리</Text>
 
                 {/* 예산 */}
@@ -53,8 +54,8 @@ export default function BudgetCategoryBottomSheet({
                             setbudg(text);
                             setSaved(false);
                         }}
+                        inputAccessoryViewID={Platform.OS === "ios" ? "budgetInputID" : undefined}
                     />
-
                 </View>
 
                 <View style={{padding: 10}}></View>
@@ -112,7 +113,25 @@ export default function BudgetCategoryBottomSheet({
                     </Text>
                 </Pressable>
             </View>
-        </KeyboardAvoidingView>
+
+
+            {/* iOS 전용 키보드 닫기 버튼 */}
+            {Platform.OS === "ios" && (
+                <InputAccessoryView nativeID="budgetInputID">
+                    <View style={{
+                        backgroundColor: "#f2f2f277",
+                        padding: 10,
+                        alignItems: "flex-end",
+                        borderTopWidth: 1,
+                        borderColor: "#ddd"
+                    }}>
+                        <Pressable onPress={() => Keyboard.dismiss()}>
+                            <Text style={{ fontSize: 16, color: colors.primary }}>완료</Text>
+                        </Pressable>
+                    </View>
+                </InputAccessoryView>
+            )}
+        </KeyboardAwareScrollView>
     );
 }
 
