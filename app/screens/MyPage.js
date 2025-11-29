@@ -2,7 +2,7 @@ import { Text, View, Image, TextInput, StyleSheet } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import React, {useState} from 'react';
 import Toggle from '../components/Toggle'
-import styles from './MyPage.styles';
+import styles from '../styles/MyPage.styles';
 
 export default function MyPage({ navigation }) {
     // 주별 예산

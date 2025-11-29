@@ -5,6 +5,7 @@ import { colors } from '../constants/colors';
 import { formatPrice3 } from '../utils/FormatPrice3';
 import RecentFoodList from '../components/RecentFoodList';
 import React from "react";
+import ImageBackground from './../../node_modules/react-native-web/src/exports/ImageBackground/index';
 
 
 const data = [
@@ -39,7 +40,7 @@ export default function Home({ navigation, setHomeType }) {
 
 
                             <View style={[styles.box]}>
-                                <Text style={{ fontWeight: "bold" }}>이번 주 지출 현황</Text>
+                                <Text style={[styles.boxTitle]}>이번 주 지출 현황</Text>
 
                                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                     <Text>사용 금액</Text>
@@ -61,14 +62,23 @@ export default function Home({ navigation, setHomeType }) {
                                 >
                                     <View style={{ backgroundColor: colors.primary, borderRadius: 10, height: 20, width:`${useRatio}%` }}></View>
                                 </View>
-
+                                
+                                {/* 둘 중 하나 case에 맞게 switch */}
                                 <View style={{ flexDirection: "row", margin: "auto" }}>
                                     <Image
                                         source={require('../../assets/down-arrow-green.png')}
                                         style={{ width: 16 }}
                                         resizeMode="contain"
-                                    />java
+                                    />
                                     <Text style={{ fontSize: 16, color: "#4CC55E" }}> 지난 주 대비 {formatPrice3(-5000)}</Text>
+                                </View>
+                                <View style={{ flexDirection: "row", margin: "auto" }}>
+                                    <Image
+                                        source={require('../../assets/up-arrow-pink.png')}
+                                        style={{ width: 16 }}
+                                        resizeMode="contain"
+                                    />
+                                    <Text style={{ fontSize: 16, color: "#F88BB1" }}> 지난 주 대비 +{formatPrice3(5000)}</Text>
                                 </View>
                             </View>
                         </View>
@@ -97,7 +107,7 @@ export default function Home({ navigation, setHomeType }) {
                             >
                                 <Image
                                     source={require('../../assets/roulette-tab.png')}
-                                    style={{ tintColor: "white", height: 25 }}
+                                    style={{ tintColor: "white", height: 25, width: 45 }}
                                     resizeMode="contain"
                                 />
                                 <Text style={{color: "white", fontWeight: "bold"}}>룰렛</Text>
@@ -117,8 +127,8 @@ export default function Home({ navigation, setHomeType }) {
                                 ]}
                             >
                                 <Image
-                                    source={require('../../assets/my-tab.png')}
-                                    style={{ tintColor: "black", height: 25 }}
+                                    source={require('../../assets/calendar-tab.png')}
+                                    style={{ tintColor: "black", height: 25, width: 40 }}
                                     resizeMode="contain"
                                 />
                                 <Text style={{ fontWeight:"bold" }}>식단 기록</Text>
@@ -126,7 +136,7 @@ export default function Home({ navigation, setHomeType }) {
                         </View>
 
                         <View style={[styles.box]}>
-                            <Text style={{ fontWeight: "bold" }}>주차별 비교</Text>
+                            <Text style={[styles.boxTitle]}>주차별 비교</Text>
 
                             {/* <BarGraph3 /> */}
                             {/* BarGraph3의 padding 조절이 안되어서 차라리 그냥 만드는게 베스트... */}
@@ -159,7 +169,7 @@ export default function Home({ navigation, setHomeType }) {
                         <View style={{ padding: 20 }}></View>
 
                         <View>
-                            <Text  style={{ fontWeight: "bold" }}>최근 식사</Text>
+                            <Text style={[styles.boxTitle]}>최근 식사</Text>
 
                             <RecentFoodList />
                         </View>
@@ -223,7 +233,6 @@ const styles = StyleSheet.create({
         marginVertical: 10,
     },
     container: {
-        paddingTop: 20,
         alignItems: 'center',
         width: '100%',
     },
@@ -263,5 +272,10 @@ const styles = StyleSheet.create({
         elevation: 7,
         transform: [{ rotate: "0.02deg" }],
     },
+    boxTitle: {
+        fontWeight: "bold",
+        fontSize: 18,
+        marginBottom: 20,
+    }
 });
 

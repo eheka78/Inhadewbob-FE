@@ -38,15 +38,16 @@ export default function MealLog({ navigation }) {
                     >
                         <BottomSheetView style={{ flex: 1 }}>
                             <View style={{ flex: 1 }}>
-                                <WeeklyCalendar2 selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
-
+                                <View style={{ paddingHorizontal: "1%" }}>
+                                    <WeeklyCalendar2 selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
+                                </View>
                                 {/* 선택한 날짜 - 식단 기록 view */}
                                 <View style={{ flex: 1, height: 900, }}>
                                     {/*<View>
                                         <Text>{formatDateTime(selectedDate)}</Text>
                                     </View>*/}
 
-                                    <ScrollView>
+                                    <ScrollView style={{ paddingHorizontal: "5%" }}>
                                         <MealList />
                                     </ScrollView>
                                 </View>

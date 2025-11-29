@@ -1,4 +1,4 @@
-import React, {useState, useRef, useCallback, useMemo} from 'react';
+import React, {useState, useRef, useCallback, useMemo, useEffect} from 'react';
 import {Text, View, StyleSheet, Button, ScrollView, Pressable} from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { BottomSheetModal, BottomSheetModalProvider, BottomSheetView } from '@gorhom/bottom-sheet';
@@ -34,6 +34,13 @@ export default function Roulette() {
     const [selectedBudget, setSelectedBudget] = useState('');
     const [checked, setChecked] = useState([]);
 
+    useEffect(() => {
+        console.log("selectedBudget: " + selectedBudget);
+    }, [selectedBudget]);
+    useEffect(() => {
+        console.log("checked: " + checked);
+    }, [checked]);
+
 
     return (
         <BottomSheetModalProvider>
@@ -45,7 +52,12 @@ export default function Roulette() {
                     >
                         <BottomSheetView>
                             <View>
-                                <BudgetCategoryBottomSheet selectedBudget={selectedBudget} setSelectedBudget={setSelectedBudget} checked={checked} setChecked={setChecked} />
+                                <BudgetCategoryBottomSheet
+                                    selectedBudget={selectedBudget} 
+                                    setSelectedBudget={setSelectedBudget} 
+                                    checked={checked} 
+                                    setChecked={setChecked}
+                                />
                             </View>
                         </BottomSheetView>
                     </BottomSheetModal>
@@ -54,7 +66,11 @@ export default function Roulette() {
                         <View style={{ margin: "auto", width: "90%", }}>
                             {/* 룰렛 머신 */}
                             <View style={styles.innerContainer}>
-                                <RouletteMachine handlePresentModalPress={handlePresentModalPress} />
+                                <RouletteMachine 
+                                    handlePresentModalPress={handlePresentModalPress} 
+                                    selectedBudget={selectedBudget}
+                                    checked={checked}
+                                />
                             </View>
 
 
