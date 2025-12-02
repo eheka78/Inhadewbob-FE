@@ -1,7 +1,7 @@
 // 360000 -> 360,000
 
 export const formatPrice2 = (price) => {
-    if (!price) return;
+    if (!price) return '0';
 
     // 숫자를 문자열로 변환하고 3자리마다 콤마 추가
     const formatted = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
