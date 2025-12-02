@@ -4,7 +4,7 @@ module.exports = function (app) {
     app.use(
         '/api',
         createProxyMiddleware({
-            target: 'https://lost-inha.kro.kr',
+            target: 'https://inha-dewbob.p-e.kr',
             changeOrigin: true,
             pathRewrite: { '^/api': '' },
         })
