@@ -6,7 +6,12 @@ export async function saveRefreshToken(token) {
 }
 
 export async function loadRefreshToken() {
-    return await SecureStore.getItemAsync("refresh_token");
+    const refresh_token = await SecureStore.getItemAsync("refresh_token");
+    if(refresh_token == null) {
+		console.log("No Refresh Token found.");
+	}	
+
+    return refresh_token;
 }
 
 export async function deleteRefreshToken() {
@@ -19,7 +24,12 @@ export async function saveAccessToken(token) {
 }
 
 export async function loadAccessToken() {
-    return await AsyncStorage.getItem("access_token");
+    const access_token = await AsyncStorage.getItem("access_token");
+    if(access_token == null) {
+		console.log("No Access Token found.");
+	}	
+
+    return access_token;
 }
 
 export async function deleteAccessToken() {
