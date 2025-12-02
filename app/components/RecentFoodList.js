@@ -1,23 +1,50 @@
 import { Pressable, Text, View } from "react-native";
 import FoodItem from "./FoodItem";
 import { useEffect, useState } from "react";
+import { loadAccessToken } from "../../tokenStorage";
+import axios from "axios";
 
 
-const mealList = [
-    { id: 1, store: "KFC", menu: "징거세트1", price: "7900", category: "패스트푸드" },
-    { id: 2, store: "KFC", menu: "징거세트2", price: "7900", category: "패스트푸드" },
-    { id: 3, store: "KFC", menu: "징거세트3", price: "7900", category: "패스트푸드" },
-    { id: 4, store: "KFC", menu: "징거세트4", price: "7900", category: "패스트푸드" },
-    { id: 5, store: "KFC", menu: "징거세트5", price: "7900", category: "패스트푸드" },
-];
+const BACKEND_URL = "https://inha-dewbob.p-e.kr";
 
 
 export default function RecentFoodList() {
-    const [recommendType, setRecommendType] = useState("예산");  // 예산, 알뜰, 든든
+    let mealList = [];
 
-    useEffect(() => {
-        console.log(recommendType);
-    }, [recommendType]);
+    useEffect(async () => {
+
+        const loadAccessTokened = await loadAccessToken();
+        console.log("Loaded Access Token in Home:", loadAccessTokened);
+
+        // 최근 식단 기록 조회 5개
+        // 소비 통계 조회
+        try {
+            const res = await axios.get(`${BACKEND_URL}/diets/latest`, {
+                headers: {
+                    Authorization: `Bearer ${loadAccessTokened}`,
+                },
+            });
+
+            console.log("getLatest 조회 성공: ", res.data);
+
+            console.log("getLatest res: ");
+            console.log(res);
+
+            console.log("mealList: ");
+            console.log(mealList);
+
+            mealList = mealList.map((item, i) => ({
+                ...item,
+                id: i,
+                store: res[i].restaurantName,
+                menu: res[i].menuName,
+                price: res[i].price
+            }));
+
+        } catch (e) {
+            console.error("getLatest 실패: ", e);
+        }
+    }, [])
 
     return (
         <View>
@@ -25,7 +52,7 @@ export default function RecentFoodList() {
             <View>
                 {mealList.map((item) => {
                     return (
-                        <FoodItem key={item.id} item={item}/>
+                        <FoodItem key={item.id} item={item} />
                     );
                 })}
             </View>
