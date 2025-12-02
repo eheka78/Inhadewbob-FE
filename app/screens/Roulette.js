@@ -72,6 +72,7 @@ export default function Roulette() {
                                     setSelectedBudget={setSelectedBudget}
                                     checked={checked}
                                     setChecked={setChecked}
+                                    recBudget={recBudget}
                                 />
                             </View>
                         </BottomSheetView>
