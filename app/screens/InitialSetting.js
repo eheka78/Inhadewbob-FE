@@ -1,10 +1,50 @@
 import { Button, Image, InputAccessoryView, Platform, Pressable, StyleSheet, Text, TextInput, View, Keyboard } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { colors } from '../constants/colors';
+import { loadAccessToken } from '../../tokenStorage';
+import axios from 'axios';
 
 export default function InitialSetting({ navigation }) {
+    console.log("InitialSetting Screen Loaded");
     const [Q, setQ] = useState(1); // 1, 2
+
+    const [weeklyMealBudget, setWeeklyMealBudget] = useState('');
+    const [weeklyDiningOutCount, setWeeklyDiningOutCount] = useState('');
+
+    useEffect(() => {
+        console.log("Initial Setting - Weekly Meal Budget:", weeklyMealBudget);
+        console.log("Initial Setting - Weekly Dining Out Count:", weeklyDiningOutCount);
+    }, [weeklyMealBudget, weeklyDiningOutCount]);
+
+    const updateProfile = async () => {
+        try {
+            // 저장된 AccessToken 불러오기
+            const accessToken = await loadAccessToken();
+            console.log("Loaded Access Token:", accessToken);
+
+            // PATCH 요청
+            const res = await axios.patch(
+                `https://inha-dewbob.p-e.kr/auth/profile`,
+                {
+                    weeklyBudget: parseInt(weeklyMealBudget, 10),
+                    eatoutCount: parseInt(weeklyDiningOutCount, 10)
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                }
+            );
+
+
+            console.log("Profile updated:", res.data);
+            navigation.navigate("Main");
+        } catch (error) {
+            console.error("Profile update error:", error.response ? error.response.data : error.message);
+            throw error;
+        }
+    };
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
@@ -27,6 +67,8 @@ export default function InitialSetting({ navigation }) {
                                 keyboardType="number-pad"
                                 inputAccessoryViewID={Platform.OS === "ios" ? "InputID" : undefined}
                                 style={{ textAlign: "center", paddingVertical: 10, }}
+                                value={weeklyMealBudget}
+                                onChangeText={setWeeklyMealBudget}
                             />
                         </View>
                     </>
@@ -42,6 +84,8 @@ export default function InitialSetting({ navigation }) {
                                 keyboardType="number-pad"
                                 inputAccessoryViewID={Platform.OS === "ios" ? "InputID" : undefined}
                                 style={{ textAlign: "center", paddingVertical: 10, }}
+                                onChangeText={setWeeklyDiningOutCount}
+                                value={weeklyDiningOutCount}
                             />
                         </View>
                     </>
@@ -89,7 +133,9 @@ export default function InitialSetting({ navigation }) {
                 <Pressable
                     onPress={() => {
                         if (Q == 1) setQ(2);
-                        if (Q == 2) navigation.navigate("Login");
+                        if (Q == 2) {
+                            updateProfile();
+                        }
                     }}
                     style={[styles.btn, { right: 20 }]}
                 >
