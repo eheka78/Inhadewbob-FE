@@ -8,11 +8,12 @@ import { formatPrice3 } from './../utils/FormatPrice3';
 const { width } = Dimensions.get("window");
 
 
-export default function RouletteMachine({ 
+export default function RouletteMachine({
 	handlePresentModalPress,
 	selectedBudget,
 	checked,
-	recBudget
+	recBudget,
+	setRecFoodList
 }) {
 	const spinAnim = useRef(new Animated.Value(0)).current;
 	const [spinning, setSpinning] = useState(false);
@@ -36,7 +37,7 @@ export default function RouletteMachine({
 		inputRange: [0, 1],
 		outputRange: ["0deg", "360deg"],
 	});
-	
+
 
 	return (
 		<View style={styles.container}>
@@ -44,18 +45,19 @@ export default function RouletteMachine({
 			{/* 룰렛 머신 공 돌아가는 영역 */}
 			<View style={styles.displayPanel}>
 				<RouletteMachineMovingBall
-					boxSize={170}
-					numBalls={5}
-					duration={5000}
 					start={spinning}
+					selectedBudget={selectedBudget}
+					checked={checked}
+					setRecFoodList={setRecFoodList}
+					recBudget={recBudget}
 				/>
 			</View>
-			
+
 			{/* 오늘 예산 출력되는 패널 */}
 			<View style={styles.panel}>
 				<Image
 					source={require('../../assets/money.png')}
-					style={{ tintColor: "white", height: 25, width: 25, marginRight:5, }}
+					style={{ tintColor: "white", height: 25, width: 25, marginRight: 5, }}
 					resizeMode="contain"
 				/>
 				<Text style={{ color: "white", fontWeight: "bold", fontSize: 18, textAlign: 'center', }}>
@@ -67,29 +69,29 @@ export default function RouletteMachine({
 			<View style={styles.panelRow}>
 				<View style={styles.panel2}>
 					{/* 선택한 사항(음식 카테고리, 선택 예산) 나오는 패널 */}
-					<Text style={{ flexDirection: "row", fontWeight: 'bold', fontSize: 15, flexWrap: "nowrap", color:"#bbb" }}>
+					<Text style={{ flexDirection: "row", fontWeight: 'bold', fontSize: 15, flexWrap: "nowrap", color: "#bbb" }}>
 						{((!selectedBudget || selectedBudget == 0) && (!checked || checked.length === 0))
 							&& "예산과 카테고리 선택해듀"}
 					</Text>
 					<Text style={{ flexDirection: "row", fontWeight: 'bold', fontSize: 15, flexWrap: "nowrap" }}>
-						{ (selectedBudget != 0 && selectedBudget) && `${formatPrice3(selectedBudget)}` }
-						{ (selectedBudget != 0 && checked.length != 0) && " / " }
-						{ (checked.length != 0 && checked) && `${checked.join(", ")}` }
+						{(selectedBudget != 0 && selectedBudget) && `${formatPrice3(selectedBudget)}`}
+						{(selectedBudget != 0 && checked.length != 0) && " / "}
+						{(checked.length != 0 && checked) && `${checked.join(", ")}`}
 					</Text>
 
 					{/* 이동 버튼 */}
-					<Pressable 
+					<Pressable
 						onPress={() => {
-							console.log("click"); 
+							console.log("click");
 							handlePresentModalPress();
 						}}
 						style={styles.moveBtn}
 					>
-						
+
 						<Text style={styles.moveBtnText}>이동</Text>
 					</Pressable>
 				</View>
-				
+
 			</View>
 
 			<View style={styles.bottomRow}>
@@ -171,8 +173,8 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		justifyContent: "space-between",
 		marginTop: 24,
-        marginLeft: 25,
-        marginRight: 15,
+		marginLeft: 25,
+		marginRight: 15,
 	},
 	roundBtn: {
 		width: 120,
@@ -187,7 +189,7 @@ const styles = StyleSheet.create({
 	},
 	pointerLine: {
 		position: "absolute",
-		top:"50%-17", // 원 밖으로 튀어나옴
+		top: "50%-17", // 원 밖으로 튀어나옴
 		width: "115%",
 		height: 34,
 		backgroundColor: RouletteColors.sub,
@@ -207,7 +209,7 @@ const styles = StyleSheet.create({
 	},
 	rectBtn2: {
 		position: "absolute",
-		bottom:8,
+		bottom: 8,
 		width: 75,
 		height: 75,
 		backgroundColor: "white",
