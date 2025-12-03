@@ -2,15 +2,43 @@ import React, { useRef, useEffect, useState } from "react";
 import { View, Animated, Dimensions } from "react-native";
 import Ball from "./Ball";
 import Ball2 from "./Ball2";
+import { getMenusByRoulette } from "../api/menu";
+import { FoodCategory } from "../constants/FoodCategory";
 
 const BALL_SIZE = 60; // 공 크기
 const NUM_BALLS = 15;  // 공 개수
 const DURATION = 5000; // 5초
 
-const RouletteMachingMovingBall = ({ start = false }) => {
+const RouletteMachingMovingBall = ({ start = false, selectedBudget, checked, setRecFoodList, recBudget }) => {
 	const { width } = Dimensions.get("window");
 	const boxWidth = width * 0.9 - 48;
 	const boxHeight = 170;
+
+	// 룰렛 돌린 후 호출되는 함수
+	const spinRoulette = async () => {
+		console.log("spinRoulette 호출됨");
+		console.log("selectedBudget:", selectedBudget);
+		console.log("checked:", checked);
+		
+		let category = [];
+		// 카테고리 선택 안했으면 전체 카테고리로 설정
+		if (checked.length === 0) {
+			FoodCategory.forEach((item) => {
+				category.push(item.name);
+			});
+		} else {
+			category = checked;
+		}
+		
+		if (selectedBudget === '') {
+			selectedBudget = recBudget;
+		}
+		const price = parseInt(selectedBudget);
+
+		await setRecFoodList(await getMenusByRoulette(category, price));
+		console.log("******** recFoodList after spinRoulette:");
+		console.log(recFoodList);
+	};
 
 
 	// 공 상태
@@ -75,7 +103,10 @@ const RouletteMachingMovingBall = ({ start = false }) => {
 		return () => {
 			clearTimeout(timer);
 			cancelAnimationFrame(animationFrameId);
+			spinRoulette();
 		};
+
+
 	}, [start]);
 
 
