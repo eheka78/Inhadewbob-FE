@@ -63,10 +63,6 @@ export default function HomePage({ navigation }) {
                             onPress={() => navigation.getParent().navigate("Login")}
                         />
                         <Button
-                            title="frontPage 이동"
-                            onPress={() => navigation.getParent().navigate("FrontPage")}
-                        />
-                        <Button
                             title="초기 설정"
                             onPress={() => navigation.getParent().navigate("InitialSetting")}
                         />
