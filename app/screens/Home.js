@@ -47,13 +47,14 @@ export default function Home({ navigation, setHomeType }) {
             setThisWeekSpent(consumeRes.thisWeekSpent);
             setDifferenceFromLastWeekSpent(consumeRes.differenceFromLastWeekSpent);
 
-            
+
             // 소비 통계 조회
             const stats = await getConsumeStats();
             setStatistics(stats);
 
             setUseRatio(stats.thisWeekSpent / stats.budget * 100);
 
+            // 주차 계산
             data[2].value = stats.thisWeekSpent;
             data[2].label = `${stats.currentMonth}월 ${stats.currentWeek}주차`;
 
