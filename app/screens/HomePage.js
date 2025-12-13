@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import {View, ScrollView, Button} from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import Home from './Home.js';
@@ -14,7 +14,6 @@ export default function HomePage({ navigation }) {
 
     // bottomSheet 관련 
     const bottomSheetModalRef = useRef(null);
-    const snapPoints = useMemo(() => ['65%'], []);
 
     const handlePresentModalPress = useCallback(() => {
         bottomSheetModalRef.current?.present();
