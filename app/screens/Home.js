@@ -1,15 +1,17 @@
 import { Text, View, Image, StyleSheet, Dimensions, Pressable, TextComponent, ScrollView, Button } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { colors } from '../constants/colors';
 import { formatPrice3 } from '../utils/FormatPrice3';
 import RecentFoodList from '../components/RecentFoodList';
-import React, { useEffect, useState } from "react";
-import { loadAccessToken } from '../../tokenStorage';
-import axios from 'axios';
+import React, { useCallback, useEffect, useState } from "react";
 import { getProfile } from '../api/auth';
 import { getConsumeStat, getConsumeStats } from '../api/consumeLog';
 import { GetPrevWeekLabel } from '../utils/GetPrevWeekLabel';
+import { getLatest } from '../api/dietLog';
+import RouletteSelectedFoodItem from '../components/RouletteSelectedFoodItem';
+import { useFocusEffect } from '@react-navigation/native';
 
 const BACKEND_URL = "https://inha-dewbob.p-e.kr";
 
@@ -35,50 +37,80 @@ export default function Home({ navigation, setHomeType }) {
     const [useRatio, setUseRatio] = useState(0);   // = thisWeekSpent / budget * 100
     const [statistics, setStatistics] = useState([]);
 
+    const [mealList, setMealList] = useState([]);
+
+
     useEffect(() => {
-        const loadData = async () => {
+        console.log(mealList);
+    }, [mealList]);
 
-            // 프로필 조회
-            await setUserInfo(await getProfile());
+    const [notSavedMeal, setNotSavedMeal] = useState([]);
 
-            // 소비 현황 조회
-            const consumeRes = await getConsumeStat();
-            setBudget(consumeRes.budget);
-            setThisWeekSpent(consumeRes.thisWeekSpent);
-            setDifferenceFromLastWeekSpent(consumeRes.differenceFromLastWeekSpent);
+    // AsyncStorage에 저장된 룰렛에서 선택한 메뉴 가져오기
+    const loadTempMeals = async () => {
+        const data = await AsyncStorage.getItem("tempMeals");
+        setNotSavedMeal(data ? JSON.parse(data) : []);
+    };
 
+    useFocusEffect(
+        useCallback(() => {
+            const loadData = async () => {
 
-            // 소비 통계 조회
-            const stats = await getConsumeStats();
-            setStatistics(stats);
+                // 프로필 조회
+                await setUserInfo(await getProfile());
 
-            setUseRatio(stats.thisWeekSpent / stats.budget * 100);
-
-            // 주차 계산
-            data[2].value = stats.thisWeekSpent;
-            data[2].label = `${stats.currentMonth}월 ${stats.currentWeek}주차`;
-
-            data[1].value = stats.lastWeekSpent;
-            data[1].label = await GetPrevWeekLabel(stats.currentMonth, stats.currentWeek, 1);
-
-            data[0].value = stats.twoWeeksAgoSpent;
-            data[0].label = await GetPrevWeekLabel(stats.currentMonth, stats.currentWeek, 2);
-        };
-
-        loadData();
-    }, []);
+                // 소비 현황 조회
+                const consumeRes = await getConsumeStat();
+                setBudget(consumeRes.budget);
+                setThisWeekSpent(consumeRes.thisWeekSpent);
+                setDifferenceFromLastWeekSpent(consumeRes.differenceFromLastWeekSpent);
 
 
+                // 소비 통계 조회
+                const stats = await getConsumeStats();
+                setStatistics(stats);
+                // 최대 100%
+                setUseRatio(Math.min((stats.thisWeekSpent / consumeRes.budget) * 100, 100));
 
+                // 주차 계산
+                data[2].value = stats.thisWeekSpent;
+                data[2].label = `${stats.currentMonth}월 ${stats.currentWeek}주차`;
+
+                data[1].value = stats.lastWeekSpent;
+                data[1].label = await GetPrevWeekLabel(stats.currentMonth, stats.currentWeek, 1);
+
+                data[0].value = stats.twoWeeksAgoSpent;
+                data[0].label = await GetPrevWeekLabel(stats.currentMonth, stats.currentWeek, 2);
+            };
+
+            loadData();
+
+            const fetchData = async () => {
+                const temp = await getLatest();
+                setMealList(temp ?? []);
+            };
+
+            fetchData();
+
+            loadTempMeals();
+        }, [])
+    );
 
 
     return (
         <SafeAreaProvider>
             <SafeAreaView style={{ backgroundColor: "white" }}>
                 <ScrollView>
-                    <Text>{userInfo.nickname} ========</Text>
                     <View style={{ width: "90%", margin: "auto" }}>
                         <View>
+                            {notSavedMeal.length > 0 && (
+                                <RouletteSelectedFoodItem
+                                    item={notSavedMeal[0]}
+                                    loadTempMeals={loadTempMeals}
+                                />
+                            )}
+
+
                             <Image
                                 source={require('../../assets/ganadi-hug.png')}
                                 style={{ width: "100%", height: 150 }}  // height 지정 말고 방법이 있을지...
@@ -91,7 +123,14 @@ export default function Home({ navigation, setHomeType }) {
 
                                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                     <Text>사용 금액</Text>
-                                    <Text>{formatPrice3(thisWeekSpent)} / {formatPrice3(budget)}</Text>
+                                    <Text
+                                        style={{
+                                            color: thisWeekSpent > budget ? "#F88BB1" : "black",
+                                            fontWeight: thisWeekSpent > budget ? "bold" : "normal",
+                                        }}
+                                    >
+                                        {formatPrice3(thisWeekSpent)} / {formatPrice3(budget)}
+                                    </Text>
                                 </View>
 
 
@@ -224,7 +263,7 @@ export default function Home({ navigation, setHomeType }) {
                         <View>
                             <Text style={[styles.boxTitle]}>최근 식사</Text>
 
-                            <RecentFoodList />
+                            <RecentFoodList mealList={mealList} />
                         </View>
 
 
@@ -277,10 +316,6 @@ export default function Home({ navigation, setHomeType }) {
                     <Button
                         title="로그인 페이지로 이동"
                         onPress={() => navigation.getParent().navigate("Login")}
-                    />
-                    <Button
-                        title="frontPage 이동"
-                        onPress={() => navigation.getParent().navigate("FrontPage")}
                     />
                     <Button
                         title="초기 설정"
