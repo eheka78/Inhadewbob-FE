@@ -1,11 +1,10 @@
 import { StyleSheet, Text, View, Image } from "react-native";
 import { formatPrice3 } from './../utils/FormatPrice3';
 import { colors } from "../constants/colors";
+import { formatDateTime2 } from "../utils/FormatDateTime2";
 
 
 export default function MealItem({ item }) {
-    console.log(item);
-
     return (
         <View style={styles.outerContainer}>
             <View style={[styles.container, styles.box]}>
@@ -16,11 +15,9 @@ export default function MealItem({ item }) {
                 />
                 <View style={{ flex: 1, flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginLeft: 15 }}>
                     <View style={{ justifyContent: "center" }}>
-                        <Text>{item.t}</Text>
-                        <Text style={{ fontWeight: "bold" }}>{item.menu}</Text>
-                        <Text>
-                            {item.category} | {item.store}
-                        </Text>
+                        <Text>{formatDateTime2(item.createdAt)}</Text>
+                        <Text style={{ fontWeight: "bold" }}>{item.menuName}</Text>
+                        <Text>{item.restaurantName}</Text>
                     </View>
 
                     <Text style={{ color: colors.primary, fontWeight: "bold", fontSize: 17, }}>
