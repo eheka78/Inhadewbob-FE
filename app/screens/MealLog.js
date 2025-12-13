@@ -9,13 +9,17 @@ import MealList from '../components/MealList';
 import { BottomSheetModal, BottomSheetView, BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { colors } from '../constants/colors';
 import AddMealLogBottomSheet from '../components/AddMealLogBottomSheet';
+import { GetWeekRange } from '../utils/GetWeekRange';
+import { getDaily, getWeekly } from '../api/dietLog';
+import { markColors } from '../constants/markColors';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 export default function MealLog({ navigation }) {
     const [selectedDate, setSelectedDate] = useState(''); // 캘린더에서 선택한 날짜 | default = 오늘
 
     useEffect(() => {
-        if(!selectedDate) return;
+        if (!selectedDate) return;
 
         console.log("selectedDate: " + selectedDate);
         handlePresentModalPress();
@@ -36,6 +40,58 @@ export default function MealLog({ navigation }) {
         bottomSheetModalRef2.current?.present();
     }, []);
 
+    const [weeklyMealList, setWeaklyMealList] = useState([]);
+    const [dailyMealList, setDailyMealList] = useState([]);
+    const [markedDatesArray, setMarkedDatesArray] = useState([]);
+
+
+    useFocusEffect(
+        useCallback(() => {
+            if (!weeklyMealList) return;
+
+            const temp = weeklyMealList
+                .filter(item => Number(item.count) > 0)   // 1️⃣ count 있는 날만
+                .map(item => ({
+                    date: item.date,                       // 2️⃣ 문자열 그대로
+                    dots: Array.from({ length: Number(item.count) }, (_, i) => ({
+                        color: markColors[i],
+                        selectedColor: markColors[i],
+                    })),
+                }));
+
+            setMarkedDatesArray(temp);
+        }, [weeklyMealList])
+    );
+
+    useFocusEffect(
+        useCallback(() => {
+            if (!selectedDate) return;
+
+            const fetchData = async () => {
+                const { start, end } = GetWeekRange(selectedDate);
+
+                const startDate = formatDateTime(start);
+                const endDate = formatDateTime(end);
+
+                console.log("주간 조회:", startDate, "~", endDate);
+
+                const weekly = await getWeekly(startDate, endDate);
+                console.log("weekly:", weekly);
+                setWeaklyMealList(weekly);
+
+                const tempDate = formatDateTime(selectedDate);
+
+                const daily = await getDaily(tempDate);
+                console.log("daily:");
+                console.log(daily);
+
+                setDailyMealList(daily);
+            };
+
+            fetchData();
+        }, [selectedDate])
+    );
+
 
     return (
         <BottomSheetModalProvider>
@@ -49,19 +105,11 @@ export default function MealLog({ navigation }) {
                     >
                         <BottomSheetView style={{ flex: 1 }}>
                             <View style={{ flex: 1 }}>
-                                <View style={{ paddingHorizontal: "1%" }}>
-                                    <WeeklyCalendar2 selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
-                                </View>
-                                {/* 선택한 날짜 - 식단 기록 view */}
-                                <View style={{ flex: 1, height: 900, }}>
-                                    {/*<View>
-                                        <Text>{formatDateTime(selectedDate)}</Text>
-                                    </View>*/}
-
-                                    <ScrollView style={{ paddingHorizontal: "5%" }}>
-                                        <MealList />
-                                    </ScrollView>
-                                </View>
+                                <WeeklyCalendar2
+                                    selected={selectedDate}
+                                    markedDatesArray={markedDatesArray}
+                                />
+                                <MealList dailyMealList={dailyMealList} />
                             </View>
                         </BottomSheetView>
                     </BottomSheetModal>
@@ -105,7 +153,7 @@ export default function MealLog({ navigation }) {
 
 const styles = StyleSheet.create({
     addBtn: {
-        position: "absolute", 
+        position: "absolute",
         bottom: 20, right: 20,
         width: 40, height: 40,
         borderRadius: 25,
