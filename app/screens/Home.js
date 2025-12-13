@@ -9,6 +9,7 @@ import { loadAccessToken } from '../../tokenStorage';
 import axios from 'axios';
 import { getProfile } from '../api/auth';
 import { getConsumeStat, getConsumeStats } from '../api/consumeLog';
+import { GetPrevWeekLabel } from '../utils/GetPrevWeekLabel';
 
 const BACKEND_URL = "https://inha-dewbob.p-e.kr";
 
@@ -41,28 +42,31 @@ export default function Home({ navigation, setHomeType }) {
             await setUserInfo(await getProfile());
 
             // 소비 현황 조회
-            const res = await getConsumeStat();
+            const consumeRes = await getConsumeStat();
+            setBudget(consumeRes.budget);
+            setThisWeekSpent(consumeRes.thisWeekSpent);
+            setDifferenceFromLastWeekSpent(consumeRes.differenceFromLastWeekSpent);
 
-            await setBudget(res.budget);
-            await setThisWeekSpent(res.thisWeekSpent);
-            await setDifferenceFromLastWeekSpent(res.differenceFromLastWeekSpent);
-
-
+            
             // 소비 통계 조회
-            await setStatistics(await getConsumeStats());
-            await setUseRatio(statistics.thisWeekSpent / statistics.budget * 100);
+            const stats = await getConsumeStats();
+            setStatistics(stats);
 
-            data[0].value = statistics.twoWeeksAgoSpent;
-            data[1].value = statistics.lastWeekSpent;
-            data[2].value = statistics.thisWeekSpent;
-            data[2].label = statistics.currentMonth + "월 " + statistics.currentWeek + "주차";
+            setUseRatio(stats.thisWeekSpent / stats.budget * 100);
 
+            data[2].value = stats.thisWeekSpent;
+            data[2].label = `${stats.currentMonth}월 ${stats.currentWeek}주차`;
+
+            data[1].value = stats.lastWeekSpent;
+            data[1].label = await GetPrevWeekLabel(stats.currentMonth, stats.currentWeek, 1);
+
+            data[0].value = stats.twoWeeksAgoSpent;
+            data[0].label = await GetPrevWeekLabel(stats.currentMonth, stats.currentWeek, 2);
         };
 
-        loadData(); // async 함수 실행
-        console.log("data: ");
-        console.log(data);
+        loadData();
     }, []);
+
 
 
 
