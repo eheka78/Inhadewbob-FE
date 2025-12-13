@@ -1,20 +1,14 @@
-import axios from "axios";
 import { loadAccessToken } from "../../tokenStorage";
-
-const BACKEND_URL = "https://inha-dewbob.p-e.kr";
+import api from "./api";
 
 
 // 소비 현황 등록
-export const create = async (memberId, remainingBudget) => {
+export const create = async (remainingBudget) => {
     const date = new Date().toISOString().split("T")[0];
     const loadAccessTokened = await loadAccessToken();
 
     if (!date) {
         console.log("create: date를 입력하세요.");
-        return;
-    }
-    if (!memberId) {
-        console.log("create: memberId를 입력하세요.");
         return;
     }
     if (!remainingBudget) {
@@ -24,15 +18,9 @@ export const create = async (memberId, remainingBudget) => {
 
     try {
         const res = await api.post(`${BACKEND_URL}/consumes`, {
-            memberId: memberId,
             remainingBudget: remainingBudget,
             date: date
-        }, {
-            headers: {
-                Authorization: `Bearer ${loadAccessTokened}`,
-            },
-        }
-        );
+        });
 
         console.log("create 조회 성공: ", res.data);
 
@@ -60,16 +48,10 @@ export const update = async (id, spentAmount, remainingBudget) => {
     }
 
     try {
-        const res = await axios.patch(
-            `${BACKEND_URL}/consumes/${id}`, {
+        const res = await api.patch(`/consumes/${id}`, {
             spentAmount: spentAmount,
             remainingBudget: remainingBudget,
-        }, {
-            headers: {
-                Authorization: `Bearer ${loadAccessTokened}`,
-            },
-        }
-        );
+        });
 
         console.log("update 조회 성공: ", res.data);
 
@@ -85,11 +67,8 @@ export const getConsumeStat = async () => {
     const loadAccessTokened = await loadAccessToken();
 
     try {
-        const res = await axios.get(`${BACKEND_URL}/consumes/status`, {
-            params: { date: date },
-            headers: {
-                Authorization: `Bearer ${loadAccessTokened}`,
-            },
+        const res = await api.get(`/consumes/status`, {
+            params: { date: date }
         });
 
         console.log("getConsumeStat 조회 성공: ", res.data);
@@ -108,11 +87,8 @@ export const getConsumeStats = async () => {
     const loadAccessTokened = await loadAccessToken();
 
     try {
-        const res = await axios.get(`${BACKEND_URL}/consumes/statistics`, {
-            params: { date: date },
-            headers: {
-                Authorization: `Bearer ${loadAccessTokened}`,
-            },
+        const res = await api.get(`/consumes/statistics`, {
+            params: { date: date }
         });
 
         console.log("getConsumeStats 조회 성공: ", res.data);

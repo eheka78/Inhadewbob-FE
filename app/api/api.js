@@ -1,5 +1,5 @@
 import axios from "axios";
-import { loadAccessToken, deleteAccessToken } from "../../tokenStorage";
+import { loadAccessToken, deleteAccessToken, loadRefreshToken } from "../../tokenStorage";
 
 export const BASE_URL = "https://inha-dewbob.p-e.kr";
 
@@ -19,6 +19,7 @@ const flushQueue = (error, newAccess) => {
     });
     queue = [];
 };
+
 api.interceptors.request.use(async (config) => {
     const token = await loadAccessToken();
     if (token) config.headers.Authorization = `Bearer ${token}`;
@@ -28,21 +29,60 @@ api.interceptors.request.use(async (config) => {
 api.interceptors.response.use(
     (response) => response,
     async (error) => {
-        if (error?.response?.status === 403) {
-            console.log("[403 발생] accessToken 삭제 및 로그아웃 처리");
+        const originalRequest = error.config;
 
-            // await deleteAccessToken();
-
-            // 전역 네비게이션으로 Login 이동
+        // refresh 요청 자체가 실패하면 바로 로그아웃
+        if (originalRequest?.url?.includes("/auth/refresh")) {
+            await deleteAccessToken();
             global.navigationRef?.reset({
                 index: 0,
                 routes: [{ name: "Login" }],
             });
+            return Promise.reject(error);
+        }
+
+        if (error?.response?.status === 403 && !originalRequest._retry) {
+            originalRequest._retry = true;
+
+            try {
+                const refreshToken = await loadRefreshToken();
+                if (!refreshToken) throw new Error("NO_REFRESH");
+
+                // ✅ refresh 요청은 baseURL 포함해서
+                const res = await axios.post(
+                    `${BASE_URL}/auth/refresh`,
+                    { refresh_token: refreshToken },
+                    { withCredentials: true }
+                );
+
+                const newAccessToken = res.data?.accessToken;
+                if (!newAccessToken) throw new Error("NO_NEW_ACCESS");
+
+                // ✅ accessToken 저장
+                await AsyncStorage.setItem("accessToken", newAccessToken);
+
+                // ✅ 원래 요청에 새 토큰 주입
+                originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+
+                return api(originalRequest);
+            } catch (refreshError) {
+                console.log("[REFRESH 실패] 로그아웃 처리");
+
+                await deleteAccessToken();
+
+                global.navigationRef?.reset({
+                    index: 0,
+                    routes: [{ name: "Login" }],
+                });
+
+                return Promise.reject(refreshError);
+            }
         }
 
         return Promise.reject(error);
     }
 );
+
 
 // api.interceptors.response.use(
 //     (res) => res,

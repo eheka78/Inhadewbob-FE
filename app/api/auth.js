@@ -1,7 +1,6 @@
 import axios from "axios";
 import { loadAccessToken } from "../../tokenStorage";
-
-const BACKEND_URL = "https://inha-dewbob.p-e.kr";
+import api from "./api";
 
 
 // 소비 현황 수정
@@ -10,11 +9,7 @@ export const getProfile = async () => {
 	if(loadAccessTokened == null) {	return null; }	
 	
 	try {
-		const res = await axios.get(`${BACKEND_URL}/auth/profile`, {
-			headers: {
-				Authorization: `Bearer ${loadAccessTokened}`,
-			},
-		});
+		const res = await api.get(`/auth/profile`);
 		console.log("Profile:", res.data);
 
 		return res.data;
