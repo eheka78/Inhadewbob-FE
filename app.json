@@ -9,11 +9,11 @@
       "ios"
     ],
     "orientation": "portrait",
-    "icon": "./assets/LOGO.png",
+    "icon": "./assets/LOGO3.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/LOGO.png",
+      "image": "./assets/LOGO3.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -23,7 +23,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/LOGO.png",
+        "foregroundImage": "./assets/LOGO3.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
@@ -31,7 +31,7 @@
       "package": "com.ddkim78.InhadewbobFE"
     },
     "web": {
-      "favicon": "./assets/LOGO.png"
+      "favicon": "./assets/LOGO3.png"
     },
     "extra": {
       "eas": {

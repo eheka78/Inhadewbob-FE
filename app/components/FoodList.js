@@ -1,75 +1,206 @@
-import { Pressable, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import FoodItem from "./FoodItem";
 import { useEffect, useState } from "react";
+import { colors } from "../constants/colors";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
+
+export default function FoodList({ recFoodList }) {
+    const navigation = useNavigation();
+    const [recommendType, setRecommendType] = useState("예산");
+    const [selectedMenu, setSelectedMenu] = useState([]);
 
 
-const mealBudget = [
-    { id: 1, store: "KFC", menu: "징거세트", price: "7900", category: "패스트푸드" },
-    { id: 2, store: "KFC", menu: "징거세트", price: "7900", category: "패스트푸드" },
-    { id: 3, store: "KFC", menu: "징거세트", price: "7900", category: "패스트푸드" },
-    { id: 4, store: "KFC", menu: "징거세트", price: "7900", category: "패스트푸드" },
-];
+    const saveTempMeal = async (meal) => {
+        const prev = await AsyncStorage.getItem("tempMeals");
+        const list = prev ? JSON.parse(prev) : [];
 
-const mealSave = [
-    { id: 5, store: "KFC", menu: "불고기 버거", price: "6600", category: "패스트푸드" },
-    { id: 6, store: "KFC", menu: "불고기 버거", price: "6600", category: "패스트푸드" },
-];
+        list.unshift(meal);
 
-const mealUse = [
-    { id: 7, store: "KFC", menu: "징거타워", price: "8600", category: "패스트푸드" },
-    { id: 8, store: "KFC", menu: "징거타워", price: "8600", category: "패스트푸드" },
-];
+        await AsyncStorage.setItem("tempMeals", JSON.stringify(list));
+    };
 
+    const saveDietLog = async () => {
+        console.log("selectedMenu: " + selectedMenu);
+        if (!selectedMenu) {
+            console.log("메뉴를 선택하세요");
+            return;
+        }
 
-export default function FoodList() {
-    const [recommendType, setRecommendType] = useState("예산");  // 예산, 알뜰, 든든
+        await saveTempMeal(selectedMenu);
 
-    useEffect(() => {
-        console.log(recommendType);
-    }, [recommendType]);
+        navigation.navigate('Home');
+    };
+
+    const renderTypeButton = (type) => {
+        const isActive = recommendType === type;
+
+        return (
+            <Pressable
+                onPress={() => setRecommendType(type)}
+                style={[
+                    styles.typeBtn,
+                    isActive && styles.typeBtnActive,
+                ]}
+            >
+                <Text
+                    style={[
+                        styles.typeBtnText,
+                        isActive && styles.typeBtnTextActive,
+                    ]}
+                >
+                    {type}
+                </Text>
+            </Pressable>
+        );
+    };
+
     return (
-        <View>
-            <View>
-                <Text>오늘의 추천 메뉴</Text>
+        <View style={styles.container}>
+            <Text style={styles.title}>오늘의 추천 메뉴</Text>
+
+            {/* 예산 / 알뜰 / 든든 버튼 */}
+            <View style={styles.typeBtnWrapper}>
+                {renderTypeButton("예산")}
+                {renderTypeButton("알뜰")}
+                {renderTypeButton("든든")}
             </View>
 
-            {/* 추천 메뉴 종류 버튼 (예산, 알뜰, 든든) */}
+            {/* 메뉴 리스트 */}
             <View>
-                <Pressable onPress={() => { setRecommendType('예산') }}>
-                    <Text>예산 메뉴</Text>
-                </Pressable>
-                <Pressable onPress={() => { setRecommendType('알뜰') }}>
-                    <Text>알뜰 메뉴</Text>
-                </Pressable>
-                <Pressable onPress={() => { setRecommendType('든든') }}>
-                    <Text>든든 메뉴</Text>
-                </Pressable>
-            </View>
-
-            {/* 추천 메뉴 리스트 출력 */}
-            <View>
+                {/* 예산 */}
                 {recommendType === "예산" &&
-                    (mealBudget.map((item) => {
-                        return (
-                            <FoodItem key={item.id} item={item} />
-                        );
-                    }))
+                    recFoodList.rouletteResponses.map((item) => (
+                        <FoodItem
+                            key={item.menuId}
+                            item={item}
+                            setSelectedMenu={setSelectedMenu}
+                            selectedMenu={selectedMenu}
+                        />
+                    ))
+                }
+                {recommendType === "예산" &&
+                    recFoodList?.rouletteResponses?.length < 1 && (
+                        <View>
+                            <Text>존재하지 않습니다.</Text>
+                        </View>
+                    )
+                }
+
+                {/* 알뜰 */}
+                {recommendType === "알뜰" &&
+                    recFoodList.aroundDownResponses.map((item) => (
+                        <FoodItem
+                            key={item.menuId}
+                            item={item}
+                            setSelectedMenu={setSelectedMenu}
+                            selectedMenu={selectedMenu}
+                        />
+                    ))
                 }
                 {recommendType === "알뜰" &&
-                    (mealSave.map((item) => {
-                        return (
-                            <FoodItem key={item.id} item={item} />
-                        );
-                    }))
+                    recFoodList?.aroundDownResponses?.length < 1 && (
+                        <View>
+                            <Text>존재하지 않습니다.</Text>
+                        </View>
+                    )
+                }
+
+                {/* 든든 */}
+                {recommendType === "든든" &&
+                    recFoodList.aroundUpResponses.map((item) => (
+                        <FoodItem
+                            key={item.menuId}
+                            item={item}
+                            setSelectedMenu={setSelectedMenu}
+                            selectedMenu={selectedMenu}
+                        />
+                    ))
                 }
                 {recommendType === "든든" &&
-                    (mealUse.map((item) => {
-                        return (
-                            <FoodItem key={item.id} item={item} />
-                        );
-                    }))
+                    recFoodList?.aroundUpResponses?.length < 1 && (
+                        <View>
+                            <Text>존재하지 않습니다.</Text>
+                        </View>
+                    )
                 }
             </View>
+
+            {/* 식단으로 저장하기 */}
+            <Pressable
+                onPress={saveDietLog}
+                disabled={!selectedMenu}
+                style={[
+                    styles.saveBtn,
+                    !selectedMenu && styles.saveBtnDisabled,
+                ]}
+            >
+                <Text style={styles.saveBtnText}>
+                    식단으로 저장하기
+                </Text>
+            </Pressable>
         </View>
     );
 }
+
+
+const styles = StyleSheet.create({
+    container: {
+        paddingTop: 40,
+        paddingBottom: 15,
+    },
+
+    title: {
+        fontSize: 18,
+        fontWeight: "bold",
+        marginBottom: 12,
+    },
+
+    /* 예산 / 알뜰 / 든든 */
+    typeBtnWrapper: {
+        flexDirection: "row",
+        marginBottom: 16,
+        gap: 10,
+    },
+
+    typeBtn: {
+        flex: 1,
+        paddingVertical: 10,
+        borderRadius: 20,
+        backgroundColor: "#EEF2F7",
+        alignItems: "center",
+    },
+
+    typeBtnActive: {
+        backgroundColor: colors.primary, // 파란색
+    },
+
+    typeBtnText: {
+        fontSize: 14,
+        color: "#555",
+        fontWeight: "600",
+    },
+
+    typeBtnTextActive: {
+        color: "white",
+    },
+
+    /* 저장 버튼 */
+    saveBtn: {
+        marginTop: 20,
+        paddingVertical: 15,
+        borderRadius: 16,
+        backgroundColor: colors.primary,
+        alignItems: "center",
+    },
+
+    saveBtnDisabled: {
+        backgroundColor: "#C7D4F7",
+    },
+
+    saveBtnText: {
+        color: "white",
+        fontSize: 16,
+        fontWeight: "bold",
+    },
+});

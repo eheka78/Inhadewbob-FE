@@ -1,32 +1,59 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { colors } from "../constants/colors";
 import { formatPrice3 } from '../utils/FormatPrice3';
 
 
-export default function FoodItem({ item }) {
+export default function FoodItem({ item, setSelectedMenu, selectedMenu }) {
+    const isSelected = item.menuId === selectedMenu.menuId;
+
     return (
         <View style={styles.outerContainer}>
-            <View style={[styles.container, styles.box]}>
-                <Image
-                    source={require('../../assets/TempImg.png')}
-                    style={styles.Img}
-                    resizeMode="contain"
-                />
+            <Pressable onPress={() => setSelectedMenu(item)}>
+                <View
+                    style={[
+                        styles.container,
+                        styles.box,
+                        isSelected && styles.selectedBox, // ⭐ 핵심
+                    ]}
+                >
+                    <Image
+                        source={require('../../assets/TempImg.png')}
+                        style={styles.Img}
+                        resizeMode="contain"
+                    />
 
-                <View style={{ flex: 1, flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginLeft: 15 }}>
-                    <View style={{ justifyContent: "center" }}>
-                        <Text style={{ fontWeight: "bold" }}>{item.menu}</Text>
-                        <Text>{item.store}</Text>
+                    <View
+                        style={{
+                            flex: 1,
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            marginLeft: 15,
+                        }}
+                    >
+                        <View>
+                            <Text style={{ fontWeight: "bold" }}>
+                                {item.menuName}
+                            </Text>
+                            <Text>{item.location}</Text>
+                        </View>
+
+                        <Text
+                            style={{
+                                color: colors.primary,
+                                fontWeight: "bold",
+                                fontSize: 17,
+                            }}
+                        >
+                            {formatPrice3(item.price)}
+                        </Text>
                     </View>
-
-                    <Text style={{ color: colors.primary, fontWeight: "bold", fontSize: 17, }}>
-                        {formatPrice3(item.price)}
-                    </Text>
                 </View>
-            </View>
+            </Pressable>
         </View>
     );
 }
+
 
 
 const styles = StyleSheet.create({
@@ -34,7 +61,7 @@ const styles = StyleSheet.create({
         width: "100%",
         paddingVertical: 10,
     },
-    Img:{
+    Img: {
         height: 60,
         width: 60,
     },
@@ -55,5 +82,14 @@ const styles = StyleSheet.create({
         shadowRadius: 7,
         elevation: 7,
         transform: [{ rotate: "0.02deg" }],
+    },
+    selectedBox: {
+        borderWidth: 2,
+        borderColor: "#5A8EF6", // 파란 테두리
+        shadowColor: "#5A8EF6",
+        shadowOpacity: 0.35,
+        shadowOffset: { width: 0, height: 0 },
+        shadowRadius: 10,
+        elevation: 12, // Android 그림자 강화
     },
 });

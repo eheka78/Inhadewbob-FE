@@ -8,8 +8,10 @@ import BudgetCategoryBottomSheet from '../components/BudgetCategoryBottomSheet.j
 import RouletteMachine from '../components/RouletteMachine';
 import FoodList from '../components/FoodList';
 import { getRecommendPrice } from '../api/menu.js';
+import { useFocusEffect } from '@react-navigation/native';
 
-export default function Roulette() {
+
+export default function Roulette({ navigation }) {
     const [recFoodList, setRecFoodList] = useState([]);
     const [recBudget, setRecBudget] = useState(0);
 
@@ -36,25 +38,26 @@ export default function Roulette() {
     const [selectedBudget, setSelectedBudget] = useState('');
     const [checked, setChecked] = useState([]);
 
-    useEffect(async () => {
-        // 추천 예산 받아오는 api
-        await setRecBudget(await getRecommendPrice());
-    }, []);
+    useFocusEffect(
+        useCallback(() => {
+            let isActive = true;
 
-    // log
-    useEffect(() => {
-        console.log("selectedBudget: " + selectedBudget);
-    }, [selectedBudget]);
-    useEffect(() => {
-        console.log("checked: " + checked);
-    }, [checked]);
-    useEffect(() => {
-        console.log("recBudget: ");
-        console.log(recBudget);
-    }, [recBudget]);
-    useEffect(() => {
-        console.log("recFoodList: " + recFoodList);
-    }, [recFoodList]);
+            const fetchData = async () => {
+                setRecFoodList([]);
+
+                const price = await getRecommendPrice();
+                if (isActive) {
+                    setRecBudget(price);
+                }
+            };
+
+            fetchData();
+
+            return () => {
+                isActive = false;
+            };
+        }, [])
+    );
 
 
     return (
@@ -88,19 +91,25 @@ export default function Roulette() {
                                     selectedBudget={selectedBudget}
                                     checked={checked}
                                     recBudget={recBudget}
+                                    setRecFoodList={setRecFoodList}
                                 />
                             </View>
 
 
                             {/* 룰렛에서 뽑은 메뉴 리스트 출력 */}
-                            <View
-                                onLayout={(event) => {
-                                    setFoodListY(event.nativeEvent.layout.y);
-                                }}
-                            >
-                                {/* { recFoodList && recFoodList.length() > 0 && <FoodList /> */}
-                                <FoodList recFoodList={recFoodList} />
-                            </View>
+                            {(
+                                recFoodList?.aroundDownResponses?.length > 0 ||
+                                recFoodList?.aroundUpResponses?.length > 0 ||
+                                recFoodList?.rouletteResponses?.length > 0
+                            ) && (
+                                    <View
+                                        onLayout={(event) => {
+                                            setFoodListY(event.nativeEvent.layout.y);
+                                        }}
+                                    >
+                                        <FoodList recFoodList={recFoodList} />
+                                    </View>
+                                )}
                         </View>
                     </ScrollView>
                 </SafeAreaView>

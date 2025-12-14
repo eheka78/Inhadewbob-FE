@@ -155,6 +155,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 10,
         marginTop: 8,
+        color: "black",
     },
     tagContainer: {
         flexDirection: "row",

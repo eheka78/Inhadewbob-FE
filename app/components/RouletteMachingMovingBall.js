@@ -19,25 +19,28 @@ const RouletteMachingMovingBall = ({ start = false, selectedBudget, checked, set
 		console.log("spinRoulette 호출됨");
 		console.log("selectedBudget:", selectedBudget);
 		console.log("checked:", checked);
-		
+
 		let category = [];
 		// 카테고리 선택 안했으면 전체 카테고리로 설정
 		if (checked.length === 0) {
 			FoodCategory.forEach((item) => {
-				category.push(item.name);
+				category.push(item.label);
 			});
 		} else {
 			category = checked;
 		}
-		
+
 		if (selectedBudget === '') {
 			selectedBudget = recBudget;
 		}
 		const price = parseInt(selectedBudget);
 
-		await setRecFoodList(await getMenusByRoulette(category, price));
+		const temp = await getMenusByRoulette(category, price);
 		console.log("******** recFoodList after spinRoulette:");
-		console.log(recFoodList);
+		console.log("recFoodList:", temp);
+
+		setRecFoodList(temp);
+
 	};
 
 
@@ -60,8 +63,8 @@ const RouletteMachingMovingBall = ({ start = false, selectedBudget, checked, set
 
 		// velocity 리셋
 		balls.forEach(ball => {
-			ball.velocityX = (Math.random() * 3 + 0.3) * (Math.random() < 0.5 ? 1 : -1);
-			ball.velocityY = (Math.random() * 3 + 0.3) * (Math.random() < 0.5 ? 1 : -1);
+			ball.velocityX = (Math.random() * 4 + 0.3) * (Math.random() < 0.5 ? 1 : -1);
+			ball.velocityY = (Math.random() * 4 + 0.3) * (Math.random() < 0.5 ? 1 : -1);
 		});
 
 		let animationFrameId;
@@ -72,8 +75,9 @@ const RouletteMachingMovingBall = ({ start = false, selectedBudget, checked, set
 				let newY = ball.y._value + ball.velocityY;
 
 				// 벽 충돌 처리
-				if (newX <= 0 || newX >= boxWidth - BALL_SIZE) ball.velocityX *= -1;
+				if (newX <= 0 || newX >= boxWidth - BALL_SIZE) ball.velocityX *= -1; // 속도 약간 증가
 				if (newY <= 0 || newY >= boxHeight - BALL_SIZE) ball.velocityY *= -1;
+
 
 				ball.x.setValue(newX);
 				ball.y.setValue(newY);
