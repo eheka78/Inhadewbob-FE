@@ -1,5 +1,5 @@
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
-import { colors } from "../constants/colors";
+import { colors, RouletteColors } from "../constants/colors";
 import { formatPrice3 } from '../utils/FormatPrice3';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { create } from "../api/dietLog";
@@ -90,19 +90,27 @@ export default function RouletteSelectedFoodItem({ item, loadTempMeals }) {
 const styles = StyleSheet.create({
     outerContainer: {
         width: "100%",
-        paddingVertical: 6,   // ⬅️ 얇게
+        paddingTop: 20,
     },
 
     card: {
-        backgroundColor: "white",
-        borderRadius: 12,     // ⬅️ 둥글기 감소
-        paddingVertical: 10,  // ⬅️ 핵심
+        backgroundColor: "#FFFFFF",
+        borderRadius: 14,
+        paddingVertical: 12,
         paddingHorizontal: 14,
-        shadowColor: "#000",
-        shadowOpacity: 0.06,  // ⬅️ 그림자 최소
-        shadowOffset: { width: 0, height: 2 },
-        shadowRadius: 3,
-        elevation: 3,
+
+        // 🔵 블루 그림자 (iOS)
+        shadowColor: "#4C7DFF",
+        shadowOpacity: 0.25,
+        shadowOffset: { width: 0, height: 6 },
+        shadowRadius: 10,
+
+        // 🔵 안드로이드
+        elevation: 6,
+
+        // 🔵 포인트 라인
+        borderLeftWidth: 10,
+        borderLeftColor: colors.primary,
     },
 
     row: {
@@ -112,31 +120,33 @@ const styles = StyleSheet.create({
 
     menuName: {
         fontSize: 14,
-        fontWeight: "600",
+        fontWeight: "700",
+        color: "#222",
     },
 
     restaurant: {
         fontSize: 12,
-        color: "#888",
+        color: "#7A7A7A",
         marginTop: 2,
     },
 
     price: {
         marginLeft: 10,
         fontSize: 14,
-        fontWeight: "bold",
+        fontWeight: "700",
         color: colors.primary,
     },
 
     iconRow: {
         flexDirection: "row",
-        marginLeft: 8,
+        marginLeft: 10,
     },
 
     icon: {
         width: 18,
         height: 18,
-        tintColor: "#444",
-        marginLeft: 8,
+        tintColor: colors.primary,
+        marginLeft: 10,
+        opacity: 0.85,
     },
 });
