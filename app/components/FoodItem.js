@@ -13,7 +13,7 @@ export default function FoodItem({ item, setSelectedMenu, selectedMenu }) {
                     style={[
                         styles.container,
                         styles.box,
-                        isSelected && styles.selectedBox, // ⭐ 핵심
+                        isSelected && styles.selectedBox,
                     ]}
                 >
                     <Image
@@ -22,74 +22,93 @@ export default function FoodItem({ item, setSelectedMenu, selectedMenu }) {
                         resizeMode="contain"
                     />
 
-                    <View
-                        style={{
-                            flex: 1,
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            marginLeft: 15,
-                        }}
-                    >
+                    <View style={styles.textRow}>
                         <View>
-                            <Text style={{ fontWeight: "bold" }}>
+                            <Text style={styles.menuText}>
                                 {item.menuName}
                             </Text>
-                            <Text>{item.location}</Text>
+                            <Text style={styles.locationText}>
+                                {item.location}
+                            </Text>
                         </View>
 
-                        <Text
-                            style={{
-                                color: colors.primary,
-                                fontWeight: "bold",
-                                fontSize: 17,
-                            }}
-                        >
+                        <Text style={styles.priceText}>
                             {formatPrice3(item.price)}
                         </Text>
                     </View>
                 </View>
             </Pressable>
         </View>
+
     );
 }
-
-
 
 const styles = StyleSheet.create({
     outerContainer: {
         width: "100%",
         paddingVertical: 10,
     },
+
     Img: {
         height: 60,
         width: 60,
+        borderRadius: 12,
     },
+
     container: {
         width: "100%",
         flexDirection: "row",
         alignItems: "center",
-        borderRadius: 10,
-        padding: 8,
     },
-    box: {  // 그림자 박스
+
+    box: {
         width: "100%",
         backgroundColor: "white",
         borderRadius: 20,
-        paddingVertical: 20, paddingHorizontal: 30,
-        shadowColor: "#000", shadowOpacity: 0.12,
+        paddingVertical: 18,
+        paddingHorizontal: 16,
+        shadowColor: "#000",
+        shadowOpacity: 0.12,
         shadowOffset: { width: 4, height: 4 },
         shadowRadius: 7,
         elevation: 7,
-        transform: [{ rotate: "0.02deg" }],
     },
+
+    textRow: {
+        flex: 1,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginLeft: 14,
+    },
+
+    /* 🔥 텍스트 위계 */
+    menuText: {
+        fontSize: 16,
+        fontWeight: "700",
+        color: "#111827",
+        marginBottom: 2,
+    },
+
+    locationText: {
+        fontSize: 13,
+        color: "#6B7280",
+    },
+
+    priceText: {
+        fontSize: 17,
+        fontWeight: "700",
+        color: colors.primary,
+    },
+
+    /* ⭐ 선택 상태 */
     selectedBox: {
         borderWidth: 2,
-        borderColor: "#5A8EF6", // 파란 테두리
-        shadowColor: "#5A8EF6",
+        borderColor: colors.primary,
+        shadowColor: colors.primary,
         shadowOpacity: 0.35,
         shadowOffset: { width: 0, height: 0 },
         shadowRadius: 10,
-        elevation: 12, // Android 그림자 강화
+        elevation: 12,
     },
 });

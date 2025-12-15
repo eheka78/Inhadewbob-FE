@@ -16,7 +16,7 @@ export default function RecentFoodItem({ item }) {
                 <View style={{ flex: 1, flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginLeft: 15 }}>
                     <View style={{ justifyContent: "center" }}>
                         <Text style={{ fontWeight: "bold" }}>{item.menuName}</Text>
-                        <Text>{item.restaurantName}</Text>
+                        <Text style={{ color: "#6B7280" }}>{item.restaurantName}</Text>
                     </View>
 
                     <Text style={{ color: colors.primary, fontWeight: "bold", fontSize: 17, }}>
@@ -49,7 +49,8 @@ const styles = StyleSheet.create({
         width: "100%",
         backgroundColor: "white",
         borderRadius: 20,
-        paddingVertical: 20, paddingHorizontal: 30,
+        paddingVertical: 18,
+        paddingHorizontal: 15,
         shadowColor: "#000", shadowOpacity: 0.12,
         shadowOffset: { width: 4, height: 4 },
         shadowRadius: 7,
