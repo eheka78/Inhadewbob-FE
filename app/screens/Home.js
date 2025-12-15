@@ -123,14 +123,19 @@ export default function Home({ navigation, setHomeType }) {
 
                                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                     <Text>사용 금액</Text>
-                                    <Text
-                                        style={{
-                                            color: thisWeekSpent > budget ? "#F88BB1" : "black",
-                                            fontWeight: thisWeekSpent > budget ? "bold" : "normal",
-                                        }}
-                                    >
-                                        {formatPrice3(thisWeekSpent)} / {formatPrice3(budget)}
-                                    </Text>
+                                    <View style={{ flexDirection: "row"}}>
+                                        <Text
+                                            style={{
+                                                color: thisWeekSpent > budget ? "#F88BB1" : "black",
+                                                fontWeight: thisWeekSpent > budget ? "bold" : "normal",
+                                            }}
+                                        >
+                                            {formatPrice3(thisWeekSpent)}
+                                        </Text>
+                                        <Text style={{ fontWeight: "bold" }}>
+                                            {" "}/ {formatPrice3(budget)}
+                                        </Text>
+                                    </View>
                                 </View>
 
 
