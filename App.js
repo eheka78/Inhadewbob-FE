@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { ActivityIndicator, Text, View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -9,6 +9,7 @@ import Login from "./app/screens/Login";
 import BottomTab from "./app/components/BottomTab";
 import InitialSetting from "./app/screens/InitialSetting";
 import FrontPage from "./app/screens/FrontPage";
+import OnboardingPage from "./app/screens/OnboardingPage";
 
 
 const Stack = createNativeStackNavigator();
@@ -21,7 +22,7 @@ function LaunchScreen({ navigation }) {
         navigation.replace("FrontPage");
     }, []);
 
-    
+
     // 로딩 화면
     return (
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -44,6 +45,10 @@ export default function App() {
                         <Stack.Screen
                             name="Launch"
                             component={LaunchScreen}
+                        />
+                        <Stack.Screen
+                            name="OnboardingPage"
+                            component={OnboardingPage}
                         />
                         <Stack.Screen
                             name="Main"
