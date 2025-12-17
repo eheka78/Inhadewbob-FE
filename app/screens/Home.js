@@ -123,7 +123,7 @@ export default function Home({ navigation, setHomeType }) {
 
                                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                     <Text>사용 금액</Text>
-                                    <View style={{ flexDirection: "row"}}>
+                                    <View style={{ flexDirection: "row" }}>
                                         <Text
                                             style={{
                                                 color: thisWeekSpent > budget ? "#F88BB1" : "black",
@@ -325,6 +325,10 @@ export default function Home({ navigation, setHomeType }) {
                     <Button
                         title="초기 설정"
                         onPress={() => navigation.getParent().navigate("InitialSetting")}
+                    />
+                    <Button
+                        title="온보딩"
+                        onPress={() => navigation.getParent().navigate("OnboardingPage")}
                     />
                 </ScrollView>
             </SafeAreaView>
