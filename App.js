@@ -10,6 +10,7 @@ import BottomTab from "./app/components/BottomTab";
 import InitialSetting from "./app/screens/InitialSetting";
 import FrontPage from "./app/screens/FrontPage";
 import OnboardingPage from "./app/screens/OnboardingPage";
+import Signup from "./app/screens/Signup";
 
 
 const Stack = createNativeStackNavigator();
@@ -57,6 +58,10 @@ export default function App() {
                         <Stack.Screen
                             name="FrontPage"
                             component={FrontPage}
+                        />
+                        <Stack.Screen
+                            name="Signup"
+                            component={Signup}
                         />
                         <Stack.Screen
                             name="Login"
