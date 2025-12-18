@@ -1,10 +1,13 @@
 import { Pressable, StyleSheet, Text, TextInput, View, Platform, InputAccessoryView, Keyboard, ScrollView } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { colors } from "../constants/colors";
+import { createDiet } from "../api/diets";
 import { useState } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
+import { formatDateTime } from "../utils/FormatDateTime";
 
-export default function AddMealLogBottomSheet() {
+export default function AddMealLogBottomSheet({onSuccess}) {
     const [dateTime, setDateTime] = useState(new Date());
     const [showIOSPicker, setShowIOSPicker] = useState(false);
     const [showAndroidDate, setShowAndroidDate] = useState(false);
@@ -15,18 +18,41 @@ export default function AddMealLogBottomSheet() {
     const [price, setPrice] = useState();
 
     const handleBottomSheet = async () => {
-        console.log(store, menu, price);
+        const hours = String(dateTime.getHours()).padStart(2, '0');
+        const minutes = String(dateTime.getMinutes()).padStart(2, '0');
+        const formattedTime = `${hours}:${minutes}`;
 
-        // 식단 등록하는 api
+        const formattedDay = dateTime.toISOString().split('T')[0];
+
+        console.log("전송 데이터 확인", 
+            {date: formattedDay,
+            time: formattedTime, store, menu, price})
+
+        try {
+            const res = await createDiet({
+                date: formattedDay, 
+                time: formattedTime, restaurantName: store.trim(), menuName: menu.trim(), price:Number(price)
+            });
+
+            console.log("식단 등록 완료", res);
+            setStore("");
+            setMenu("");
+            setPrice("");
+            Keyboard.dismiss();
+        } catch (e) {
+            console.log("등록 실패");
+        }
     };
 
 
     return (
-        <KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <BottomSheetScrollView
+            keyboardShouldPersistTaps='handled'
+            contentContainerStyle={{ flexGrow: 1, paddingBottom: 60 }}
+            enableOnAndroid={true}>
             <View style={{ flex: 1, padding: 30 }}>
-
                 <Text style={styles.title}>식단 추가</Text>
-                <ScrollView>
+
                     {/* 시간 · 날짜 */}
                     <View style={{ marginVertical: 12 }}>
                         <Text style={styles.subTitle}>시간 · 날짜</Text>
@@ -198,7 +224,7 @@ export default function AddMealLogBottomSheet() {
                             설정 완료
                         </Text>
                     </Pressable>
-                </ScrollView>
+
             </View>
 
             {/* iOS 전용 키보드 닫기 버튼 */}
@@ -217,7 +243,7 @@ export default function AddMealLogBottomSheet() {
                     </View>
                 </InputAccessoryView>
             )}
-        </KeyboardAwareScrollView>
+        </BottomSheetScrollView>
     );
 }
 

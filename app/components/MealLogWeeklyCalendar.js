@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Pressable, StyleSheet, Image, ScrollView } from "react-native";
-
+import { View, Text, Pressable, StyleSheet, Image, ScrollView, Alert } from "react-native";
+import { deleteDiet } from "../api/diets";
 import { colors } from "../constants/colors";
 import MealList from "./MealList";
 import { getDaily, getWeekly } from "../api/dietLog";
@@ -89,6 +89,31 @@ export default function MealLogWeeklyCalendar({ selectedDate, setSelectedDate, s
     const getYearMonthLabel = (date) => {
         return `${date.getFullYear()}년 ${date.getMonth() + 1}월`;
     };
+
+    
+// const handleDelete = (id) => {
+//   Alert.alert(
+//     "삭제할까?",
+//     "이 식단 기록을 삭제합니다.",
+//     [
+//       { text: "취소", style: "cancel" },
+//       {
+//         text: "삭제",
+//         style: "destructive",
+//         onPress: async () => {
+//           try {
+//             await deleteDiet(id);
+//             console.log("삭제 완료 id:", id);
+//             await fetchDaily(selected); // ✅ 삭제 후 다시 불러오기
+//             // 점(weekly count)도 바로 갱신 원하면 weekly fetch도 여기서 같이 호출
+//           } catch (e) {
+//             console.log("삭제 실패", e?.response?.status, e?.response?.data, e?.message);
+//           }
+//         },
+//       },
+//     ]
+//   );
+// };
 
 
     return (

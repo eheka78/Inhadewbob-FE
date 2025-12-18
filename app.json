@@ -28,19 +28,21 @@
       },
       "edgeToEdgeEnabled": true,
       "softwareKeyboardLayoutMode": "pan",
-      "package": "com.ddkim78.InhadewbobFE"
+      "package": "com.ddkim78.inhadewbob"
     },
     "web": {
       "favicon": "./assets/LOGO3.png"
     },
     "extra": {
       "eas": {
-        "projectId": "4ee666f4-0e57-4588-b376-6a0518cd2a02"
+        "projectId": "4ee666f4-0e57-4588-b376-6a0518cd2a02",
+        "BKprojectId": "adfcd994-2a8d-494b-89a7-3a77492cc39d"
       }
     },
     "plugins": [
       "expo-web-browser",
       "expo-secure-store"
-    ]
+    ],
+    "owner": "bukyung"
   }
 }
