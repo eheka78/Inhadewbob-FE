@@ -30,12 +30,10 @@ export default function MealLogMonthlyCalendar({
                 snapPoints={['100%']}
                 index={0}
                 enablePanDownToClose={true} // 아래로 스와이프하면 닫기
+                keyboardBehavior="fill" 
+                keyboardBlurBehavior="restore"
             >
-                <BottomSheetView style={{ flex: 1 }}>
-                    <View style={{ flex: 1 }}>
-                        <AddMealLogBottomSheet />
-                    </View>
-                </BottomSheetView>
+                <AddMealLogBottomSheet/>
             </BottomSheetModal >
 
 
